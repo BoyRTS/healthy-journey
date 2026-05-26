@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #f7efe2;
+  --cream-deep: #eadcc9;
+  --warm-white: #fffdf8;
+  --olive: #4f6346;
+  --sage: #8f9f7e;
+  --sage-soft: #d9e0cf;
+  --beige: #d3bea1;
+  --beige-soft: #efe3d3;
+  --gold: #cba65d;
+  --gold-soft: #ead7a5;
+  --earth: #8b735b;
+  --charcoal: #2d2f29;
+  --muted: #746d62;
+  --line: rgba(75, 65, 49, 0.12);
+  --shadow-soft: 0 24px 80px rgba(70, 56, 36, 0.12);
+  --shadow-card: 0 18px 48px rgba(70, 56, 36, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--cream);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: var(--font-sans-thai), "Noto Sans Thai", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.display-serif {
+  font-family: var(--font-serif-thai), "Noto Serif Thai", Georgia, serif;
+}
+
+button,
+a {
+  font-family: var(--font-sans-thai), "Noto Sans Thai", Arial, sans-serif;
+}
+
+::selection {
+  background: rgba(203, 166, 93, 0.34);
+}
+
+.wellness-surface {
+  background:
+    radial-gradient(circle at 15% 0%, rgba(203, 166, 93, 0.18), transparent 30rem),
+    radial-gradient(circle at 92% 18%, rgba(143, 159, 126, 0.2), transparent 28rem),
+    linear-gradient(135deg, var(--warm-white) 0%, var(--cream) 48%, var(--beige-soft) 100%);
+}
+
+.editorial-image {
+  background:
+    linear-gradient(140deg, rgba(45, 47, 41, 0.1), transparent 38%),
+    radial-gradient(circle at 28% 20%, rgba(255, 253, 248, 0.78), transparent 0 10rem),
+    linear-gradient(135deg, #d8c4a5 0%, #b9c0a2 42%, #ede1cf 100%);
+}
+
+.gold-rule {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
