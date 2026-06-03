@@ -1,0 +1,72 @@
+export const coachOrganization = {
+  owner: {
+    name: "Coach Nan",
+    role: "หัวหน้าโค้ช",
+    teamName: "Healthy Journey Team A",
+  },
+  stats: [
+    { label: "โค้ช", value: "4" },
+    { label: "โค้ชฝึกหัด", value: "6" },
+    { label: "สมาชิกในทีม", value: "148" },
+  ],
+  coaches: [
+    {
+      name: "Coach Prae",
+      role: "โค้ช",
+      status: "Active",
+      members: 42,
+      focus: "ดูแลสมาชิกที่ส่งการบ้านสม่ำเสมอ",
+      tone: "active",
+    },
+    {
+      name: "Coach May",
+      role: "โค้ช",
+      status: "ต้องการคำแนะนำ",
+      members: 36,
+      focus: "ช่วยสมาชิกใหม่ให้เริ่มง่ายขึ้น",
+      tone: "guide",
+    },
+    {
+      name: "Coach Beam",
+      role: "โค้ช",
+      status: "Active",
+      members: 31,
+      focus: "ติดตามลูกค้าที่ซื้อแล้ว",
+      tone: "active",
+    },
+    {
+      name: "Coach Ann",
+      role: "โค้ช",
+      status: "ต้องการคำแนะนำ",
+      members: 28,
+      focus: "ดูแลกลุ่มที่ต้องปรับจังหวะ",
+      tone: "guide",
+    },
+  ],
+  trainees: [
+    {
+      name: "Trainee Fon",
+      role: "โค้ชฝึกหัด",
+      status: "กำลังฝึกงาน",
+      members: 9,
+      focus: "ฝึกอ่านสถานะสมาชิก",
+      tone: "training",
+    },
+    {
+      name: "Trainee Lin",
+      role: "โค้ชฝึกหัด",
+      status: "พร้อมเป็นโค้ช",
+      members: 7,
+      focus: "ฝึกเลือก template message",
+      tone: "ready",
+    },
+    {
+      name: "Trainee Nut",
+      role: "โค้ชฝึกหัด",
+      status: "กำลังฝึกงาน",
+      members: 6,
+      focus: "ฝึกติดตามสมาชิกใหม่",
+      tone: "training",
+    },
+  ],
+} as const;

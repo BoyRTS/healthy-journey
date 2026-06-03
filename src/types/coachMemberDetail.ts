@@ -88,6 +88,8 @@ export type MemberDetailPageData = {
   member: {
     name: string;
     initial: string;
+    imageSrc?: string;
+    imageAlt?: string;
     coachName: string;
     daysLeft: number;
     phone: string;

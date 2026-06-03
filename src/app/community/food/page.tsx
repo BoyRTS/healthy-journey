@@ -1,3 +1,4 @@
+// NOTE: If this page needs changes, ask the user first and confirm one page at a time.
 import Image from "next/image";
 import Link from "next/link";
 

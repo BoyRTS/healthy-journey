@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
+import { Kanit, Noto_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
+import { ClerkAppProvider } from "@/components/auth/ClerkAppProvider";
 import "./globals.css";
 
 const notoSansThai = Noto_Sans_Thai({
@@ -14,9 +15,16 @@ const notoSerifThai = Noto_Serif_Thai({
   display: "swap",
 });
 
+const kanit = Kanit({
+  subsets: ["thai", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-coach-display",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Healthy Journey",
-  description: "Premium wellness coaching SaaS prototype",
+  title: "Healthy Journey | Premium Wellness Coaching",
+  description: "Premium wellness coaching prototype for members and coaches.",
 };
 
 export default function RootLayout({
@@ -25,11 +33,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${notoSansThai.variable} ${notoSerifThai.variable}`}
-    >
-      <body>{children}</body>
+    <html lang="th" className={`${notoSansThai.variable} ${notoSerifThai.variable} ${kanit.variable}`}>
+      <body>
+        <ClerkAppProvider>{children}</ClerkAppProvider>
+      </body>
     </html>
   );
 }

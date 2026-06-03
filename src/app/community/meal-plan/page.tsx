@@ -1,37 +1,55 @@
-import Link from "next/link";
+import { MemberPageShell } from "@/components/layout/MemberPageShell";
+import { WellnessCard } from "@/components/ui/WellnessCard";
 
 const cards = [
-  "ไอเดียอาหารดีๆ ที่เข้ากับเป้าหมายสมาชิก",
-  "ตัวอย่างมื้อแบบง่ายและอบอุ่น",
-  "โครงสร้างมื้ออาหารที่ดูแลได้จริง",
+  {
+    title: "มื้อที่ทำตามได้จริง",
+    text: "คัดเมนูที่ดูง่ายและเหมาะกับการใช้ในบ้านของสมาชิกส่วนใหญ่",
+  },
+  {
+    title: "บาลานซ์แบบสบาย ๆ",
+    text: "ช่วยให้เห็นภาพการจัดจานโดยไม่ต้องลงลึกเกินไปในเดโม",
+  },
+  {
+    title: "ของที่มีอยู่ในครัว",
+    text: "เน้นเมนูที่ปรับจากวัตถุดิบใกล้ตัวและหาได้ไม่ยาก",
+  },
 ];
 
 export default function MealPlanPage() {
   return (
-    <main className="min-h-screen bg-[var(--cream)] px-4 py-5 text-[var(--charcoal)] sm:px-6 sm:py-8">
-      <div className="mx-auto flex min-h-[calc(100vh-2.5rem)] max-w-3xl flex-col rounded-[2rem] border border-white/60 bg-[var(--warm-white)]/92 p-5 shadow-[var(--shadow-soft)] sm:p-7">
-        <Link className="text-sm font-semibold text-[var(--olive)]" href="/member">
-          ← กลับไปหน้า member
-        </Link>
-        <div className="mt-6 rounded-[1.75rem] bg-[linear-gradient(135deg,#f9f1e2,#e9dcc0)] p-6 ring-1 ring-[rgba(203,166,93,0.18)]">
+    <MemberPageShell
+      backHref="/member"
+      backLabel="กลับไปหน้าหลักสมาชิก"
+      eyebrow="HEALTH JOURNEY"
+      subtitle="หน้าแผนมื้ออาหารที่ใช้โครงและโทนเดียวกับหน้าสมาชิกอื่น"
+      title="Meal Plan"
+    >
+      <div className="h-full p-5 sm:p-7">
+        <div className="rounded-[1.75rem] bg-[linear-gradient(135deg,#f9f1e2,#e9dcc0)] p-6 ring-1 ring-[rgba(203,166,93,0.18)]">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--olive)]">
-            Healthy Journey
+            Health Journey
           </p>
-          <h1 className="mt-3 font-serif text-4xl font-semibold text-[var(--olive)]">
-            Meal Plan เลือกอาหารดีๆ
-          </h1>
+          <h2 className="mt-3 text-4xl font-semibold text-[var(--olive)]">
+            Meal Plan
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
+            หน้านี้รวบรวมตัวอย่างแผนมื้ออาหารแบบเรียบง่ายเพื่อใช้ในเดโมและสื่อสารกับสมาชิก
+          </p>
+
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {cards.map((card) => (
-              <div
-                key={card}
-                className="rounded-[1.35rem] bg-[rgba(255,253,248,0.9)] p-4 shadow-[0_10px_24px_rgba(70,56,36,0.08)] ring-1 ring-[var(--line)]"
+              <WellnessCard
+                key={card.title}
+                className="p-4"
               >
-                {card}
-              </div>
+                <h3 className="text-sm font-semibold text-[var(--olive)]">{card.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">{card.text}</p>
+              </WellnessCard>
             ))}
           </div>
         </div>
       </div>
-    </main>
+    </MemberPageShell>
   );
 }

@@ -9,3 +9,6 @@ dist/
 out/
 coverage/
 *.log
+
+# clerk configuration (can include secrets)
+/.clerk/

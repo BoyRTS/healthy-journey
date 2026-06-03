@@ -1,6 +1,7 @@
-﻿import { dashboardCover } from "@/data/imageAssets";
 import Image from "next/image";
 import Link from "next/link";
+import { MemberPageShell } from "@/components/layout/MemberPageShell";
+import { dashboardCover } from "@/data/imageAssets";
 
 const DEBUG_HOTSPOTS = false;
 const IMAGE_WIDTH = 941;
@@ -9,8 +10,8 @@ const IMAGE_HEIGHT = 1672;
 const hotspots = [
   {
     id: 1,
-    label: "เธเธฅเธธเนเธกเธซเธฅเธฑเธ เธชเนเธเธเธฒเธฃเธเนเธฒเธ",
-    href: "/community/food",
+    label: "กลุ่มหลัก ส่งการบ้าน",
+    href: "/member/food",
     x: 60,
     y: 460,
     width: 580,
@@ -18,7 +19,7 @@ const hotspots = [
   },
   {
     id: 2,
-    label: "เธชเธญเธเธเธฒเธฃเธญเธญเธเธเธณเธฅเธฑเธเธเธฒเธข",
+    label: "สอนการออกกำลังกาย",
     href: "/community/exercise",
     x: 60,
     y: 620,
@@ -27,7 +28,7 @@ const hotspots = [
   },
   {
     id: 3,
-    label: "เธเธฅเธฅเธฑเธเธเนเธชเธกเธฒเธเธดเธ",
+    label: "ผลลัพธ์สมาชิก",
     href: "/community/results",
     x: 60,
     y: 775,
@@ -36,7 +37,7 @@ const hotspots = [
   },
   {
     id: 4,
-    label: "Healthy Tips",
+    label: "Health Tips",
     href: "/community/tips",
     x: 60,
     y: 935,
@@ -54,7 +55,7 @@ const hotspots = [
   },
   {
     id: 6,
-    label: "เธเธนเธ”เธเธธเธขเธเธฑเธเนเธเนเธเธชเนเธงเธเธ•เธฑเธง",
+    label: "คุยกับโค้ชส่วนตัว",
     href: "/coach-chat",
     x: 60,
     y: 1240,
@@ -63,8 +64,8 @@ const hotspots = [
   },
   {
     id: 7,
-    label: "เธชเนเธเธเธฒเธฃเธเนเธฒเธเธงเธฑเธเธเธตเน",
-    href: "/community/food",
+    label: "ส่งการบ้านวันนี้",
+    href: "/member/food",
     x: 105,
     y: 1405,
     width: 785,
@@ -78,44 +79,55 @@ function toPercent(value: number, total: number) {
 
 export default function MemberPage() {
   return (
-    <main className="min-h-screen bg-[var(--cream)] overflow-hidden">
-      <section className="relative flex min-h-screen items-start justify-center overflow-hidden p-0 pt-0 md:items-center lg:p-4">
-        <div className="relative h-[100svh] w-full overflow-hidden bg-[var(--cream)] shadow-[var(--shadow-soft)] md:h-[min(100svh,calc(100vw*1.775))] md:w-[min(100vw,calc(100svh*0.5625))] md:rounded-[2.25rem] lg:h-[92vh] lg:max-h-[980px] lg:w-auto lg:aspect-[941/1672] lg:rounded-[2.25rem]">
-          <Image
-            alt="Healthy Journey dashboard cover"
-            className="pointer-events-none object-cover md:object-contain"
-            fill
-            priority
-            sizes="(min-width: 1024px) 552px, (min-width: 768px) 60vw, 100vw"
-            src={dashboardCover}
-          />
-          {hotspots.map((hotspot) => (
-            <Link
-              key={hotspot.id}
-              aria-label={hotspot.label}
-              className={`absolute z-20 block pointer-events-auto outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-                DEBUG_HOTSPOTS
-                  ? "border border-red-500/80 bg-red-500/20 text-[10px] font-semibold text-red-900"
-                  : "bg-transparent"
-              }`}
-              href={hotspot.href}
-              style={{
-                left: toPercent(hotspot.x, IMAGE_WIDTH),
-                top: toPercent(hotspot.y, IMAGE_HEIGHT),
-                width: toPercent(hotspot.width, IMAGE_WIDTH),
-                height: toPercent(hotspot.height, IMAGE_HEIGHT),
-              }}
-            >
-              {DEBUG_HOTSPOTS ? (
-                <span className="absolute left-2 top-2 rounded bg-white/80 px-1.5 py-0.5">
-                  {hotspot.id}
-                </span>
-              ) : null}
-            </Link>
-          ))}
-        </div>
-      </section>
-    </main>
+    <MemberPageShell
+      action={
+        <Link
+          className="rounded-full bg-[var(--olive)] px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(83,96,56,0.18)]"
+          href="/member/profile"
+        >
+          โปรไฟล์ของฉัน
+        </Link>
+      }
+      backHref="/member/profile"
+      backLabel="โปรไฟล์ของฉัน"
+      eyebrow="HEALTHY JOURNEY"
+      subtitle="หน้าเริ่มต้นของสมาชิกสำหรับเข้าห้องส่งการบ้าน ดูคอมมูนิตี้ และติดตามกิจกรรมประจำวัน"
+      title="Member Space"
+    >
+      <div className="relative h-full min-h-[calc(100vh-7.5rem)] overflow-hidden bg-[var(--cream)]">
+        <Image
+          alt="Healthy Journey dashboard cover"
+          className="pointer-events-none object-cover md:object-contain"
+          fill
+          priority
+          sizes="(min-width: 1024px) 552px, (min-width: 768px) 60vw, 100vw"
+          src={dashboardCover}
+        />
+        {hotspots.map((hotspot) => (
+          <Link
+            key={hotspot.id}
+            aria-label={hotspot.label}
+            className={`pointer-events-auto absolute z-20 block bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+              DEBUG_HOTSPOTS
+                ? "border border-red-500/80 bg-red-500/20 text-[10px] font-semibold text-red-900"
+                : ""
+            }`}
+            href={hotspot.href}
+            style={{
+              left: toPercent(hotspot.x, IMAGE_WIDTH),
+              top: toPercent(hotspot.y, IMAGE_HEIGHT),
+              width: toPercent(hotspot.width, IMAGE_WIDTH),
+              height: toPercent(hotspot.height, IMAGE_HEIGHT),
+            }}
+          >
+            {DEBUG_HOTSPOTS ? (
+              <span className="absolute left-2 top-2 rounded bg-white/80 px-1.5 py-0.5">
+                {hotspot.id}
+              </span>
+            ) : null}
+          </Link>
+        ))}
+      </div>
+    </MemberPageShell>
   );
 }
-

@@ -24,6 +24,8 @@ export const praeMemberDetail = {
   member: {
     name: "คุณแพร แพรวา",
     initial: "แ",
+    imageSrc: "/images/prae-avatar.png",
+    imageAlt: "รูปโปรไฟล์คุณแพร",
     coachName: "Coach Nam",
     daysLeft: 24,
     phone: "08X-XXX-XXXX",
@@ -122,6 +124,8 @@ export const mayMemberDetail = {
   member: {
     name: "คุณเมย์",
     initial: "ม",
+    imageSrc: "/images/badge-avatar-2.jpg",
+    imageAlt: "รูปโปรไฟล์คุณเมย์",
     coachName: "Coach Nam",
     daysLeft: 18,
     phone: "08X-XXX-XXXX",
