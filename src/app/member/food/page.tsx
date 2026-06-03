@@ -1,213 +1,307 @@
-import Image from "next/image";
-import Link from "next/link";
-import { MemberPageShell } from "@/components/layout/MemberPageShell";
-import { StatCard } from "@/components/ui/StatCard";
-import { memberFoodPageData } from "@/data/mockMemberFood";
+const chatMessages = [
+  {
+    id: "m1",
+    sender: "แพร",
+    time: "08:12",
+    type: "text",
+    body: "เช้านี้เริ่มเบา ๆ ก่อนนะคะ วันนี้อยากดื่มน้ำให้ครบด้วย",
+    reactions: [
+      { emoji: "❤️", count: 4 },
+      { emoji: "👍", count: 2 },
+    ],
+    tone: "member",
+  },
+  {
+    id: "m2",
+    sender: "เมย์",
+    time: "08:24",
+    type: "food",
+    mealName: "ข้าว ไข่ต้ม และผักลวก",
+    mealTime: "เช้า",
+    imageSrc: "/images/prae-lunch.webp",
+    reactions: [
+      { emoji: "🥗", count: 5 },
+      { emoji: "❤️", count: 3 },
+    ],
+    tone: "member",
+  },
+  {
+    id: "m3",
+    sender: "โค้ชดาว",
+    time: "08:31",
+    type: "text",
+    body: "ดูอบอุ่นมากค่ะ ใครมีมื้อเช้าแล้วแวะมาแชร์กันได้เลยนะ",
+    reactions: [
+      { emoji: "😊", count: 6 },
+      { emoji: "❤️", count: 4 },
+    ],
+    tone: "coach",
+  },
+  {
+    id: "m4",
+    sender: "บีม",
+    time: "09:05",
+    type: "water",
+    amount: "1.2L",
+    goal: "2L",
+    progress: 60,
+    reactions: [
+      { emoji: "💧", count: 7 },
+      { emoji: "👍", count: 3 },
+    ],
+    tone: "member",
+  },
+  {
+    id: "m5",
+    sender: "นุ่น",
+    time: "09:22",
+    type: "sticker",
+    sticker: "🌿",
+    label: "วันนี้ไปต่อแบบนุ่ม ๆ",
+    reactions: [
+      { emoji: "😂", count: 2 },
+      { emoji: "❤️", count: 5 },
+    ],
+    tone: "member",
+  },
+] as const;
 
-const activityToneStyles = {
-  draft: "bg-[var(--beige-soft)] text-[var(--earth)]",
-  submitted: "bg-[rgba(143,159,126,0.18)] text-[var(--olive)]",
-  reviewed: "bg-[rgba(203,166,93,0.2)] text-[var(--earth)]",
-} as const;
-
-const activityStatusLabels = {
-  draft: "ฉบับร่าง",
-  submitted: "ส่งแล้ว",
-  reviewed: "ตรวจแล้ว",
-} as const;
+const roomActions = [
+  {
+    label: "แชร์มื้อนี้",
+    icon: ForkKnifeIcon,
+    className: "bg-[#8F9F7E] text-[#26301E]",
+  },
+  {
+    label: "บันทึกน้ำ",
+    icon: DropletIcon,
+    className: "bg-[#A9C8BE] text-[#1F3530]",
+  },
+  {
+    label: "สติกเกอร์",
+    icon: SmileIcon,
+    className: "bg-[#D9A6A3] text-[#3D2524]",
+  },
+] as const;
 
 export default function MemberFoodPage() {
-  const { member, stats, submission, coachSummary, guidance, recentActivity } = memberFoodPageData;
-
   return (
-    <MemberPageShell
-      action={
-        <Link
-          className="rounded-full bg-[var(--olive)] px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(83,96,56,0.18)]"
-          href="/member/profile"
-        >
-          ดูโปรไฟล์สมาชิก
-        </Link>
-      }
-      backHref="/member"
-      backLabel="กลับไปหน้าหลักสมาชิก"
-      eyebrow="HEALTHY JOURNEY"
-      subtitle="ห้องส่งการบ้านอาหารของสมาชิก ใช้ส่งรูป มื้ออาหาร และหมายเหตุให้โค้ชดูต่อในรอบตรวจ"
-      title="ห้องส่งการบ้านอาหาร"
-    >
-      <div className="relative h-full overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(203,166,93,0.12),_transparent_32%),radial-gradient(circle_at_85%_20%,_rgba(143,159,126,0.12),_transparent_28%),linear-gradient(180deg,_rgba(255,253,248,0.92)_0%,_rgba(247,239,226,0.96)_100%)]" />
-        <div className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(79,99,70,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(79,99,70,0.08)_1px,transparent_1px)] [background-size:30px_30px]" />
+    <main className="min-h-screen bg-[#EDE1D0] font-[var(--font-sans-thai)] text-[#3E352B]">
+      <div className="relative min-h-screen overflow-hidden bg-[url('/images/background_food1.png')] bg-cover bg-center">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(248,239,224,0.76)_0%,rgba(231,215,191,0.68)_44%,rgba(143,159,126,0.52)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,247,232,0.65),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(190,132,126,0.30),transparent_34%)]" />
 
-        <div className="relative flex h-full flex-col gap-4 overflow-y-auto p-4 sm:p-5">
-          <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-            <article className="overflow-hidden rounded-[2rem] border border-white/70 bg-[rgba(255,253,248,0.84)] shadow-[var(--shadow-soft)]">
-              <div className="relative h-56 overflow-hidden sm:h-64">
-                <Image
-                  alt={submission.imageAlt}
-                  className="object-cover"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                  src={submission.imageSrc}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(45,47,41,0.68)] via-[rgba(45,47,41,0.16)] to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-white/18 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                      {member.memberCode}
-                    </span>
-                    <span className="rounded-full bg-white/18 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                      {member.streakLabel}
-                    </span>
-                  </div>
-                  <h2 className="mt-3 font-serif text-3xl font-semibold text-white sm:text-4xl">
-                    {submission.title}
-                  </h2>
-                  <p className="mt-2 max-w-2xl text-sm leading-7 text-white/88 sm:text-base">
-                    {submission.subtitle}
-                  </p>
-                </div>
+        <div className="relative mx-auto flex min-h-screen w-full max-w-[430px] flex-col">
+          <header className="sticky top-0 z-20 border-b border-[#F8EEDC]/55 bg-[#F5E8D6]/72 px-4 py-3 shadow-[0_10px_30px_rgba(82,65,45,0.08)] backdrop-blur-2xl">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h1 className="text-[20px] font-bold leading-tight text-[#3D352B]">
+                  ห้องพูดคุยและส่งการบ้าน
+                </h1>
+                <p className="mt-1 text-[12px] font-medium text-[#7B6D5F]">
+                  สมาชิก 28 คน กำลังคุยกันในห้อง
+                </p>
               </div>
+              <button
+                aria-label="เปิดเมนูห้อง"
+                className="grid h-11 w-11 place-items-center rounded-full border border-[#EEE0CA]/80 bg-[#FFF8EC]/65 text-[#536044] backdrop-blur-xl"
+                type="button"
+              >
+                <MenuIcon />
+              </button>
+            </div>
+          </header>
 
-              <div className="grid gap-4 p-4 sm:p-5 xl:grid-cols-[1.05fr_0.95fr]">
-                <div className="rounded-[1.6rem] border border-[var(--line)] bg-white/78 p-4 shadow-[var(--shadow-card)]">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-semibold tracking-[0.18em] text-[var(--olive)]">TODAY'S ENTRY</p>
-                      <h3 className="mt-2 text-2xl font-semibold text-[var(--olive)]">{submission.mealLabel}</h3>
-                    </div>
-                    <div className="rounded-full bg-[var(--sage-soft)] px-3 py-1.5 text-xs font-semibold text-[var(--olive)]">
-                      {submission.mealTime}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 space-y-4">
-                    <div>
-                      <span className="mb-2 block text-sm font-semibold text-[var(--charcoal)]">อัปโหลดรูปอาหาร</span>
-                      <div className="flex min-h-36 flex-col items-center justify-center rounded-[1.35rem] border border-dashed border-[rgba(79,99,70,0.22)] bg-[linear-gradient(180deg,rgba(255,253,248,0.88),rgba(239,227,211,0.56))] px-4 py-6 text-center">
-                        <p className="text-sm font-semibold text-[var(--olive)]">ลากรูปมาวาง หรือแตะเพื่อเลือกไฟล์</p>
-                        <p className="mt-2 max-w-sm text-xs leading-6 text-[var(--muted)]">
-                          รองรับรูปอาหารที่ถ่ายจากมือถือ เพื่อใช้เป็นหลักฐานการบ้านให้โค้ชดูต่อ
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <div>
-                        <span className="mb-2 block text-sm font-semibold text-[var(--charcoal)]">ความรู้สึกหลังมื้อ</span>
-                        <div className="rounded-[1.1rem] border border-[var(--line)] bg-white px-4 py-3 text-sm text-[var(--muted)]">
-                          {submission.moodLabel}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="mb-2 block text-sm font-semibold text-[var(--charcoal)]">เวลาที่ทาน</span>
-                        <div className="rounded-[1.1rem] border border-[var(--line)] bg-white px-4 py-3 text-sm text-[var(--muted)]">
-                          {submission.mealTime}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="mb-2 block text-sm font-semibold text-[var(--charcoal)]">หมายเหตุจากสมาชิก</span>
-                      <div className="min-h-28 rounded-[1.25rem] border border-[var(--line)] bg-white px-4 py-4 text-sm leading-7 text-[var(--muted)]">
-                        {submission.notePlaceholder}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                    <button
-                      className="rounded-full border border-[var(--line)] bg-white px-5 py-3 text-sm font-semibold text-[var(--olive)] shadow-[var(--shadow-card)] transition hover:-translate-y-0.5"
-                      type="button"
-                    >
-                      {submission.actionPrimary}
-                    </button>
-                    <button
-                      className="rounded-full bg-[var(--olive)] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(79,99,70,0.22)] transition hover:-translate-y-0.5"
-                      type="button"
-                    >
-                      {submission.actionSecondary}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  <section className="rounded-[1.6rem] border border-[var(--line)] bg-[rgba(255,253,248,0.84)] p-4 shadow-[var(--shadow-card)]">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-xs font-semibold tracking-[0.18em] text-[var(--olive)]">MEMBER SNAPSHOT</p>
-                        <h3 className="mt-2 text-2xl font-semibold text-[var(--olive)]">{member.name}</h3>
-                      </div>
-                      <span className="rounded-full bg-[var(--beige-soft)] px-3 py-1.5 text-xs font-semibold text-[var(--earth)]">
-                        {member.coachName}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                      การส่งการบ้านวันนี้จะถูกเก็บไว้ในชุดข้อมูลของสมาชิก เพื่อให้โค้ชดูภาพรวมอาหารและคุยต่อในรอบถัดไป
-                    </p>
-
-                    <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                      {stats.map((stat) => (
-                        <StatCard key={stat.label} label={stat.note} value={stat.value} tone={stat.tone} />
-                      ))}
-                    </div>
-                  </section>
-
-                  <section className="rounded-[1.6rem] border border-[var(--line)] bg-[rgba(255,253,248,0.84)] p-4 shadow-[var(--shadow-card)]">
-                    <p className="text-xs font-semibold tracking-[0.18em] text-[var(--olive)]">COACH VIEW</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-[var(--olive)]">{coachSummary.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{coachSummary.description}</p>
-                    <div className="mt-4 grid gap-2">
-                      {coachSummary.items.map((item) => (
-                        <div key={item} className="flex items-center gap-3 rounded-[1.15rem] border border-[var(--line)] bg-white px-4 py-3">
-                          <span className="h-2.5 w-2.5 rounded-full bg-[var(--gold)]" />
-                          <span className="text-sm text-[var(--charcoal)]">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                </div>
-              </div>
-            </article>
-
-            <aside className="grid gap-4">
-              <section className="rounded-[2rem] border border-white/70 bg-[rgba(255,253,248,0.84)] p-4 shadow-[var(--shadow-soft)]">
-                <p className="text-xs font-semibold tracking-[0.18em] text-[var(--olive)]">GUIDANCE</p>
-                <h3 className="mt-2 text-2xl font-semibold text-[var(--olive)]">{guidance.title}</h3>
-                <div className="mt-4 space-y-3">
-                  {guidance.items.map((item) => (
-                    <div key={item} className="rounded-[1.15rem] border border-[var(--line)] bg-white px-4 py-3">
-                      <span className="text-sm leading-6 text-[var(--charcoal)]">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="rounded-[2rem] border border-white/70 bg-[rgba(255,253,248,0.84)] p-4 shadow-[var(--shadow-soft)]">
-                <p className="text-xs font-semibold tracking-[0.18em] text-[var(--olive)]">RECENT ACTIVITY</p>
-                <h3 className="mt-2 text-2xl font-semibold text-[var(--olive)]">ประวัติการส่งล่าสุด</h3>
-                <div className="mt-4 space-y-3">
-                  {recentActivity.map((item) => (
-                    <div key={`${item.title}-${item.time}`} className="rounded-[1.25rem] border border-[var(--line)] bg-white p-4 shadow-[0_8px_20px_rgba(70,56,36,0.05)]">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-semibold text-[var(--charcoal)]">{item.title}</p>
-                          <p className="mt-1 text-xs text-[var(--muted)]">{item.time}</p>
-                        </div>
-                        <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${activityToneStyles[item.status]}`}>
-                          {activityStatusLabels[item.status]}
-                        </span>
-                      </div>
-                      <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.note}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </aside>
+          <section className="flex-1 space-y-4 overflow-y-auto px-3 py-4 pb-[182px]">
+            {chatMessages.map((message) => (
+              <ChatBubble key={message.id} message={message} />
+            ))}
           </section>
+
+          <footer className="fixed bottom-0 left-1/2 z-20 w-full max-w-[430px] -translate-x-1/2 border-t border-[#F8EEDC]/50 bg-[#F3E3CF]/78 px-3 pb-4 pt-3 shadow-[0_-16px_40px_rgba(82,65,45,0.12)] backdrop-blur-2xl">
+            <div className="grid grid-cols-3 gap-2">
+              {roomActions.map((action) => {
+                const Icon = action.icon;
+
+                return (
+                  <button
+                    key={action.label}
+                    className={`flex items-center justify-center gap-1.5 rounded-full px-3 py-3 text-[12px] font-bold shadow-[0_8px_18px_rgba(82,65,45,0.12)] ${action.className}`}
+                    type="button"
+                  >
+                    <Icon className="h-4 w-4" />
+                    {action.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-3 flex items-center gap-2">
+              <button
+                aria-label="เปิดสติกเกอร์"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#E8D8C1] bg-[#FFF7EB]/72 text-[#BE847E] backdrop-blur-xl"
+                type="button"
+              >
+                <SmileIcon className="h-5 w-5" />
+              </button>
+              <div className="flex min-h-11 flex-1 items-center rounded-full border border-[#E8D8C1] bg-[#FFF7EB]/74 px-4 text-[14px] text-[#9A8A78] backdrop-blur-xl">
+                พูดคุยในห้อง...
+              </div>
+              <button
+                aria-label="ส่งข้อความ"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#8F9F7E] text-[#FFF8EC] shadow-[0_10px_20px_rgba(83,96,68,0.22)]"
+                type="button"
+              >
+                <SendIcon />
+              </button>
+            </div>
+          </footer>
         </div>
       </div>
-    </MemberPageShell>
+    </main>
+  );
+}
+
+function ChatBubble({ message }: { message: (typeof chatMessages)[number] }) {
+  const isCoach = message.tone === "coach";
+
+  if (message.type === "sticker") {
+    return (
+      <article className="mx-auto max-w-[250px] rounded-[28px] border border-[#F4E8D7]/70 bg-[#FFF6E9]/54 px-5 py-4 text-center shadow-[0_14px_34px_rgba(82,65,45,0.11)] backdrop-blur-xl">
+        <MessageHeader sender={message.sender} time={message.time} />
+        <div className="py-3 text-6xl leading-none">{message.sticker}</div>
+        <p className="text-[13px] font-semibold text-[#6D614F]">{message.label}</p>
+        <Reactions reactions={message.reactions} />
+      </article>
+    );
+  }
+
+  return (
+    <article
+      className={`rounded-[26px] border px-4 py-3 shadow-[0_14px_34px_rgba(82,65,45,0.10)] backdrop-blur-xl ${
+        isCoach
+          ? "ml-8 border-[#D8C7AA]/70 bg-[#E8D8BE]/68"
+          : "mr-6 border-[#F4E8D7]/70 bg-[#FFF6E9]/62"
+      }`}
+    >
+      <MessageHeader sender={message.sender} time={message.time} />
+
+      {message.type === "text" ? (
+        <p className="mt-2 text-[14px] leading-7 text-[#453A30]">{message.body}</p>
+      ) : null}
+
+      {message.type === "food" ? (
+        <div className="mt-3 overflow-hidden rounded-[22px] border border-[#EFE0C9]/80 bg-[#FFF9EF]/55">
+          <div className="h-44 bg-[url('/images/prae-lunch.webp')] bg-cover bg-center" />
+          <div className="p-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-[15px] font-bold text-[#3D352B]">{message.mealName}</p>
+                <p className="mt-1 text-[12px] font-semibold text-[#8A7865]">
+                  มื้อ{message.mealTime}
+                </p>
+              </div>
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-[#8F9F7E]/22 text-[#536044]">
+                <ForkKnifeIcon className="h-5 w-5" />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {message.type === "water" ? (
+        <div className="mt-3 rounded-[22px] border border-[#D7E1D5]/80 bg-[#F3F7EF]/58 p-4">
+          <div className="flex items-center gap-3">
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-[#A9C8BE]/45 text-[#3F6A60]">
+              <DropletIcon className="h-6 w-6" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[15px] font-bold text-[#3D352B]">{message.amount}</p>
+                <p className="text-[12px] font-semibold text-[#7B6D5F]">
+                  เป้าหมาย {message.goal}
+                </p>
+              </div>
+              <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-[#D8CDB9]/70">
+                <div
+                  className="h-full rounded-full bg-[#8F9F7E]"
+                  style={{ width: `${message.progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <Reactions reactions={message.reactions} />
+    </article>
+  );
+}
+
+function MessageHeader({ sender, time }: { sender: string; time: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <p className="text-[13px] font-bold text-[#536044]">{sender}</p>
+      <p className="text-[11px] font-semibold text-[#9A8A78]">{time}</p>
+    </div>
+  );
+}
+
+function Reactions({
+  reactions,
+}: {
+  reactions: readonly { emoji: string; count: number }[];
+}) {
+  return (
+    <div className="mt-3 flex flex-wrap gap-1.5">
+      {reactions.map((reaction) => (
+        <span
+          key={`${reaction.emoji}-${reaction.count}`}
+          className="rounded-full border border-[#E8D8C1]/80 bg-[#FFF8EC]/60 px-2.5 py-1 text-[11px] font-bold text-[#6D614F]"
+        >
+          {reaction.emoji} {reaction.count}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
+function ForkKnifeIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 3v8m3-8v8M7 7h3m-1.5 4v10M17 3v18m0-18c-2.2 1.7-3 3.8-3 6.3 0 2.2 1.2 3.7 3 3.7" />
+    </svg>
+  );
+}
+
+function DropletIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3s6 6.2 6 11a6 6 0 1 1-12 0c0-4.8 6-11 6-11Z" />
+    </svg>
+  );
+}
+
+function SmileIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.5 9h.01M15.5 9h.01M8 14c1 1.4 2.4 2 4 2s3-.6 4-2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+  );
+}
+
+function SendIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m5 12 14-7-4 14-3-6-7-1Z" />
+    </svg>
   );
 }
