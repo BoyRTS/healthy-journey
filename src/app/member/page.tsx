@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { MemberPageShell } from "@/components/layout/MemberPageShell";
 import { dashboardCover } from "@/data/imageAssets";
@@ -55,10 +55,10 @@ const hotspots = [
   },
   {
     id: 6,
-    label: "คุยกับโค้ชส่วนตัว",
-    href: "/coach-chat",
+    label: "คำแนะนำจากโค้ช",
+    href: "/member/message",
     x: 60,
-    y: 1240,
+    y: 1245,
     width: 585,
     height: 150,
   },
@@ -83,50 +83,52 @@ export default function MemberPage() {
       action={
         <Link
           className="rounded-full bg-[var(--olive)] px-4 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(83,96,56,0.18)]"
-          href="/member/profile"
+          href="/chat"
         >
-          โปรไฟล์ของฉัน
+          พูดคุยกับโค้ช
         </Link>
       }
-      backHref="/member/profile"
-      backLabel="โปรไฟล์ของฉัน"
+      backHref="/member/result"
+      backLabel="ผลลัพธ์ของฉัน"
       eyebrow="HEALTHY JOURNEY"
       subtitle="หน้าเริ่มต้นของสมาชิกสำหรับเข้าห้องส่งการบ้าน ดูคอมมูนิตี้ และติดตามกิจกรรมประจำวัน"
       title="Member Space"
     >
-      <div className="relative h-full min-h-[calc(100vh-7.5rem)] overflow-hidden bg-[var(--cream)]">
-        <Image
-          alt="Healthy Journey dashboard cover"
-          className="pointer-events-none object-cover md:object-contain"
-          fill
-          priority
-          sizes="(min-width: 1024px) 552px, (min-width: 768px) 60vw, 100vw"
-          src={dashboardCover}
-        />
-        {hotspots.map((hotspot) => (
-          <Link
-            key={hotspot.id}
-            aria-label={hotspot.label}
-            className={`pointer-events-auto absolute z-20 block bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-              DEBUG_HOTSPOTS
-                ? "border border-red-500/80 bg-red-500/20 text-[10px] font-semibold text-red-900"
-                : ""
-            }`}
-            href={hotspot.href}
-            style={{
-              left: toPercent(hotspot.x, IMAGE_WIDTH),
-              top: toPercent(hotspot.y, IMAGE_HEIGHT),
-              width: toPercent(hotspot.width, IMAGE_WIDTH),
-              height: toPercent(hotspot.height, IMAGE_HEIGHT),
-            }}
-          >
-            {DEBUG_HOTSPOTS ? (
-              <span className="absolute left-2 top-2 rounded bg-white/80 px-1.5 py-0.5">
-                {hotspot.id}
-              </span>
-            ) : null}
-          </Link>
-        ))}
+      <div className="flex h-full min-h-[calc(100vh-7.5rem)] justify-center bg-[var(--cream)] lg:items-start lg:p-6">
+        <div className="relative h-full min-h-[calc(100vh-7.5rem)] w-full overflow-hidden bg-[var(--cream)] lg:h-auto lg:min-h-0 lg:max-w-[520px] lg:aspect-[941/1672] lg:rounded-[1.75rem] lg:shadow-[0_24px_60px_rgba(83,96,56,0.16)]">
+          <Image
+            alt="Healthy Journey dashboard cover"
+            className="pointer-events-none object-cover"
+            fill
+            priority
+            sizes="(min-width: 1024px) 520px, (min-width: 768px) 60vw, 100vw"
+            src={dashboardCover}
+          />
+          {hotspots.map((hotspot) => (
+            <Link
+              key={hotspot.id}
+              aria-label={hotspot.label}
+              className={`pointer-events-auto absolute z-20 block bg-transparent outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+                DEBUG_HOTSPOTS
+                  ? "border border-red-500/80 bg-red-500/20 text-[10px] font-semibold text-red-900"
+                  : ""
+              }`}
+              href={hotspot.href}
+              style={{
+                left: toPercent(hotspot.x, IMAGE_WIDTH),
+                top: toPercent(hotspot.y, IMAGE_HEIGHT),
+                width: toPercent(hotspot.width, IMAGE_WIDTH),
+                height: toPercent(hotspot.height, IMAGE_HEIGHT),
+              }}
+            >
+              {DEBUG_HOTSPOTS ? (
+                <span className="absolute left-2 top-2 rounded bg-white/80 px-1.5 py-0.5">
+                  {hotspot.id}
+                </span>
+              ) : null}
+            </Link>
+          ))}
+        </div>
       </div>
     </MemberPageShell>
   );
