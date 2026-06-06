@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MemberPageShell } from "@/components/layout/MemberPageShell";
-import { requireHealthyJourneyCurrentUser, type MemberHealthProfile } from "@/lib/auth/server";
+import { getHealthyJourneyCurrentUser, type MemberHealthProfile } from "@/lib/auth/server";
 
 function getMemberHealthProfile(value: unknown): Partial<MemberHealthProfile> {
   if (!value || typeof value !== "object") {
@@ -33,8 +33,8 @@ function getDaysToTarget(targetDate: string | undefined) {
 }
 
 export default async function MemberResultPage() {
-  const user = await requireHealthyJourneyCurrentUser();
-  const profile = getMemberHealthProfile(user.privateMetadata.memberHealthProfile);
+  const user = await getHealthyJourneyCurrentUser();
+  const profile = getMemberHealthProfile(user?.privateMetadata.memberHealthProfile);
   const currentWeight = toNumber(profile.weightKg);
   const targetWeight = toNumber(profile.desiredWeightKg);
   const progressPercent = getProgressPercent(currentWeight, targetWeight);
@@ -86,8 +86,18 @@ export default async function MemberResultPage() {
             {nickname}
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)]">
-            หน้านี้แสดงผลลัพธ์แบบคำนวณตรงจากข้อมูลสมาชิก ไม่มีการใช้ AI และไม่มีข้อมูล mock
+            {user
+              ? "หน้านี้แสดงผลลัพธ์แบบคำนวณตรงจากข้อมูลสมาชิก ไม่มีการใช้ AI และไม่มีข้อมูล mock"
+              : "เข้าสู่ระบบเพื่อดูผลลัพธ์ส่วนตัวจากข้อมูล onboarding ของคุณ"}
           </p>
+          {!user ? (
+            <Link
+              className="mt-5 inline-flex rounded-full bg-[var(--olive)] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(83,96,56,0.18)]"
+              href="/sign-in"
+            >
+              เข้าสู่ระบบ
+            </Link>
+          ) : null}
         </section>
 
         <section className="mt-5 grid gap-3 sm:grid-cols-3">
