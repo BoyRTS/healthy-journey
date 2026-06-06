@@ -9,19 +9,23 @@ import {
   getCoachPaletteColor,
   getCoachTextColor,
 } from "@/lib/coachTheme";
+import { dailyReviewConfig, getDailyReviewLabel } from "@/lib/dailyReviewConfig";
 
 const settings = [
   {
-    title: "Template Message",
-    note: "เลือกข้อความจากชุดที่เตรียมไว้ก่อนส่งทุกครั้ง โค้ชเป็นคนตรวจและส่งเอง",
+    title: "Daily review cutoff",
+    value: getDailyReviewLabel(),
+    note: "ใช้กำหนดเวลาปิดรอบประจำวันของระบบ",
   },
   {
-    title: "Member Status",
-    note: "ใช้สถานะสมาชิกชุดเดียวกันทุกหน้า เพื่อช่วยเลือก template ให้เหมาะกับบริบท",
+    title: "Daily reset",
+    value: dailyReviewConfig.resetTime,
+    note: "วันใหม่เริ่มตามเวลาไทย",
   },
   {
-    title: "Review First",
-    note: "เปิดหน้า member detail เพื่อดูบริบทก่อนคัดลอกหรือส่งข้อความจริง",
+    title: "Timezone",
+    value: dailyReviewConfig.timeZone,
+    note: "ทุกการจัดกลุ่มวันอ้างอิง timezone นี้",
   },
 ] as const;
 
@@ -30,7 +34,7 @@ export default function CoachSettingsPage() {
     <CoachThemeShell>
       <CoachPageHeader
         title="ตั้งค่าโค้ช"
-        description="ค่าตั้งต้น mock สำหรับคุมวิธีทำงานของโค้ชใน prototype"
+        description="ค่าการทำงานที่ระบบใช้จริงสำหรับรอบ review และนโยบายข้อความ"
       />
 
       <section className="space-y-3">
@@ -40,18 +44,17 @@ export default function CoachSettingsPage() {
           const mutedTextColor = getCoachMutedTextColor(backgroundColor);
 
           return (
-          <article
-            key={item.title}
-            className="rounded-[20px] border p-4"
-            style={{
-              backgroundColor,
-              borderColor: backgroundColor,
-              color: textColor,
-            }}
-          >
-            <h2 className={`${coachTheme.displayFont} text-[18px] font-semibold`}>{item.title}</h2>
-            <p className="mt-2 text-[13px] leading-6" style={{ color: mutedTextColor }}>{item.note}</p>
-          </article>
+            <article
+              key={item.title}
+              className="rounded-[20px] border p-4"
+              style={{ backgroundColor, borderColor: backgroundColor, color: textColor }}
+            >
+              <p className={`${coachTheme.displayFont} text-[12px] font-semibold uppercase`}>{item.title}</p>
+              <h2 className={`${coachTheme.displayFont} mt-2 text-[22px] font-semibold`}>{item.value}</h2>
+              <p className="mt-2 text-[13px] leading-6" style={{ color: mutedTextColor }}>
+                {item.note}
+              </p>
+            </article>
           );
         })}
       </section>
@@ -61,10 +64,10 @@ export default function CoachSettingsPage() {
           Policy
         </p>
         <h2 className={`${coachTheme.displayFont} mt-2 text-[21px] font-semibold leading-tight text-white`}>
-          ไม่มีข้อความ AI ถึงสมาชิก
+          ไม่มี AI สำหรับข้อความถึงสมาชิก
         </h2>
         <p className="mt-3 text-[13px] leading-7 text-[#D4D4D4]">
-          หน้า settings นี้เป็น mock UI เท่านั้น และย้ำว่า coach/admin ต้องเลือกข้อความจาก template ตรวจเอง และส่งเอง
+          Coach/Admin ต้องเลือกข้อความจาก template ตรวจเอง และส่งเอง ระบบไม่สร้างข้อความถึงสมาชิกด้วย AI
         </p>
       </section>
 
@@ -72,4 +75,3 @@ export default function CoachSettingsPage() {
     </CoachThemeShell>
   );
 }
-
