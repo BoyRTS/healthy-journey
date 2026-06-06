@@ -222,19 +222,5 @@ export async function getCoachMemberDetailFromMessages(slug: string): Promise<Me
           tags: ["รอการบ้าน", "ติดตามต่อ", "template"],
         }
       : undefined,
-    coachReviewContext: {
-      title: "ภาพรวมที่ช่วยโค้ชตัดสินใจ",
-      description: "ข้อมูลนี้มาจากข้อความและ graph snapshot ที่ coach บันทึกไว้ล่าสุด",
-      highlights: [
-        { label: "ข้อความล่าสุด", value: "1", note: "ดึงจากฐานข้อมูลจริง" },
-        { label: "สถานะ", value: latest.status, note: "จาก message record" },
-        { label: "อัปเดต", value: formatRelativeTime(latest.created_at), note: "เวลาไทย" },
-      ],
-      cues: [
-        "ใช้ข้อความ template เดิมเพื่อทดสอบ flow การส่งจริง",
-        "หน้ารายละเอียดนี้อ่านข้อมูลจากตาราง coach_member_messages",
-        "ถ้าไม่มี snapshot ระบบจะยังแสดงข้อมูลพื้นฐานได้",
-      ],
-    },
   };
 }
