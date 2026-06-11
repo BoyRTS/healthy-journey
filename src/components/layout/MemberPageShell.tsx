@@ -3,13 +3,15 @@ import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
 
 type MemberPageShellProps = {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   subtitle: string;
   backHref: string;
   backLabel: string;
   action?: ReactNode;
   children: ReactNode;
+  subtitleClassName?: string;
+  titleClassName?: string;
 };
 
 export function MemberPageShell({
@@ -20,6 +22,8 @@ export function MemberPageShell({
   backLabel,
   action,
   children,
+  subtitleClassName,
+  titleClassName,
 }: MemberPageShellProps) {
   return (
     <main className="min-h-screen bg-[var(--cream)] px-3 py-3 overflow-hidden sm:px-4 sm:py-4">
@@ -38,7 +42,9 @@ export function MemberPageShell({
             }
             eyebrow={eyebrow}
             subtitle={subtitle}
+            subtitleClassName={subtitleClassName}
             title={title}
+            titleClassName={titleClassName}
           />
         </div>
 
