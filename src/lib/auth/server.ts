@@ -41,7 +41,6 @@ function toMetadataRecord(value: unknown): AuthMetadata {
 
 export async function getHealthyJourneyCurrentUser(): Promise<HealthyJourneyAuthUser | null> {
   let user = null;
-  const { userId } = await auth();
 
   try {
     user = await currentUser();
@@ -49,7 +48,19 @@ export async function getHealthyJourneyCurrentUser(): Promise<HealthyJourneyAuth
     user = null;
   }
 
-  if (!user && userId && process.env.CLERK_SECRET_KEY) {
+  if (!user && process.env.CLERK_SECRET_KEY) {
+    let userId: string | null = null;
+
+    try {
+      userId = (await auth()).userId;
+    } catch {
+      userId = null;
+    }
+
+    if (!userId) {
+      return null;
+    }
+
     const client = await clerkClient();
     const fetchedUser = await client.users.getUser(userId);
 
