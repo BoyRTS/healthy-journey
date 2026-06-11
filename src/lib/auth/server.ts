@@ -1,4 +1,4 @@
-import { clerkClient, currentUser } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import type { HealthyJourneyRole } from "@/lib/authRouting";
@@ -40,12 +40,25 @@ function toMetadataRecord(value: unknown): AuthMetadata {
 }
 
 export async function getHealthyJourneyCurrentUser(): Promise<HealthyJourneyAuthUser | null> {
-  let user;
+  let user = null;
+  const { userId } = await auth();
 
   try {
     user = await currentUser();
   } catch {
-    return null;
+    user = null;
+  }
+
+  if (!user && userId && process.env.CLERK_SECRET_KEY) {
+    const client = await clerkClient();
+    const fetchedUser = await client.users.getUser(userId);
+
+    return {
+      id: fetchedUser.id,
+      publicMetadata: toMetadataRecord(fetchedUser.publicMetadata),
+      privateMetadata: toMetadataRecord(fetchedUser.privateMetadata),
+      role: fetchedUser.publicMetadata?.role,
+    };
   }
 
   if (!user) {

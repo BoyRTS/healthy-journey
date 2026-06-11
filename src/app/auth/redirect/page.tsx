@@ -7,6 +7,8 @@ import {
 import { getHealthyJourneyCurrentUser } from "@/lib/auth/server";
 import { healthyJourneyAuthRoutes } from "@/lib/auth/routes";
 
+export const dynamic = "force-dynamic";
+
 export default async function AuthRedirectPage() {
   const user = await getHealthyJourneyCurrentUser();
   const role = user?.publicMetadata?.role;

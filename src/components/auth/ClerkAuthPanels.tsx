@@ -25,7 +25,7 @@ export function ClerkSignInPanel() {
   return (
     <AuthShell>
       <SignIn
-        fallbackRedirectUrl={healthyJourneyAuthRoutes.authRedirect}
+        fallbackRedirectUrl={healthyJourneyAuthRoutes.memberHome}
         path={healthyJourneyAuthRoutes.signIn}
         routing="path"
         signUpUrl={healthyJourneyAuthRoutes.signUp}
@@ -38,7 +38,7 @@ export function ClerkSignUpPanel() {
   return (
     <AuthShell>
       <SignUp
-        fallbackRedirectUrl={healthyJourneyAuthRoutes.authRedirect}
+        fallbackRedirectUrl={healthyJourneyAuthRoutes.memberOnboarding}
         path={healthyJourneyAuthRoutes.signUp}
         routing="path"
         signInUrl={healthyJourneyAuthRoutes.signIn}
