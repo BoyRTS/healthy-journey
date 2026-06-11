@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/auth/redirect",
   "/member/result",
+  "/api/member/meal-homework(.*)",
 ]);
 
 export const healthyJourneyMiddleware = clerkMiddleware(async (auth, req) => {
