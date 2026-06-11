@@ -3,7 +3,7 @@
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { compressMealPhoto, type CompressedMealPhoto } from "@/lib/compressMealPhoto";
-import type { MealHomeworkSubmission } from "@/types/mealHomework";
+import type { CommunityMealHomeworkSubmission } from "@/types/mealHomework";
 
 type HomeworkStatus = "idle" | "compressing" | "submitting" | "success" | "error";
 
@@ -13,7 +13,7 @@ export default function MemberFoodPage() {
   const { isLoaded, isSignedIn } = useUser();
   const [isHomeworkOpen, setIsHomeworkOpen] = useState(false);
   const [isStickerOpen, setIsStickerOpen] = useState(false);
-  const [submissions, setSubmissions] = useState<MealHomeworkSubmission[]>([]);
+  const [submissions, setSubmissions] = useState<CommunityMealHomeworkSubmission[]>([]);
   const [isLoadingSubmissions, setIsLoadingSubmissions] = useState(true);
 
   async function loadSubmissions() {
@@ -32,7 +32,7 @@ export default function MemberFoodPage() {
       return;
     }
 
-    const body = (await response.json()) as { submissions?: MealHomeworkSubmission[] };
+    const body = (await response.json()) as { submissions?: CommunityMealHomeworkSubmission[] };
     setSubmissions(body.submissions ?? []);
     setIsLoadingSubmissions(false);
   }
@@ -198,19 +198,39 @@ function SignInRequiredBubble() {
   );
 }
 
-function FoodSubmissionBubble({ submission }: { submission: MealHomeworkSubmission }) {
+function FoodSubmissionBubble({ submission }: { submission: CommunityMealHomeworkSubmission }) {
+  const displayName =
+    submission.is_current_member
+      ? "คุณ"
+      : (submission.member_profile?.display_name ?? submission.member_name ?? "สมาชิก");
+
   return (
-    <article className="mr-6 rounded-[20px] border border-white/30 bg-white/20 px-4 py-3 text-black shadow-[0_8px_32px_0_rgba(0,0,0,0.22)] backdrop-blur-[16px] [-webkit-backdrop-filter:blur(16px)]">
-      <MessageHeader sender="คุณ" time={formatBangkokDateTime(submission.submitted_at)} tone="member" />
+    <article className={`${submission.is_current_member ? "mr-6" : "ml-6"} rounded-[20px] border border-white/30 bg-white/20 px-4 py-3 text-black shadow-[0_8px_32px_0_rgba(0,0,0,0.22)] backdrop-blur-[16px] [-webkit-backdrop-filter:blur(16px)]`}>
+      <MessageHeader sender={displayName} time={formatBangkokDateTime(submission.submitted_at)} tone="member" />
       <div className="mt-3 overflow-hidden rounded-[20px] border border-white/30 bg-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.18)] backdrop-blur-[16px] [-webkit-backdrop-filter:blur(16px)]">
+        {submission.photo_url ? (
+          <img
+            alt={`รูปอาหารมื้อ${submission.meal_label}ของ${displayName}`}
+            className="max-h-[280px] w-full object-cover"
+            src={submission.photo_url}
+          />
+        ) : null}
         <div className="p-3">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[15px] font-bold text-black">ส่งการบ้านมื้อ{submission.meal_label}</p>
-              <p className="mt-1 text-[12px] font-semibold text-black/75">ส่งให้โค้ชตรวจแล้ว</p>
+              <p className="text-[15px] font-bold text-black">ส่งรูปอาหารมื้อ{submission.meal_label}</p>
+              <p className="mt-1 text-[12px] font-semibold text-black/75">แชร์ไว้ในห้องอาหารรวมแล้ว</p>
             </div>
             <div className="grid h-10 w-10 place-items-center rounded-full bg-white/18 text-black">
-              <MealPhotoIcon className="h-5 w-5" />
+              {submission.member_profile?.avatar_url ? (
+                <img
+                  alt={`รูปโปรไฟล์${displayName}`}
+                  className="h-10 w-10 rounded-full object-cover"
+                  src={submission.member_profile.avatar_url}
+                />
+              ) : (
+                <span className="text-[13px] font-black">{displayName.slice(0, 1)}</span>
+              )}
             </div>
           </div>
           {submission.note ? (
@@ -228,7 +248,7 @@ function RealHomeworkSheet({
   onSubmitted,
 }: {
   onClose: () => void;
-  onSubmitted: (submission: MealHomeworkSubmission) => void;
+  onSubmitted: (submission: CommunityMealHomeworkSubmission) => void;
 }) {
   const [compressedPhoto, setCompressedPhoto] = useState<CompressedMealPhoto | null>(null);
   const [mealLabel, setMealLabel] = useState<(typeof mealOptions)[number]>("เช้า");
@@ -299,7 +319,7 @@ function RealHomeworkSheet({
       return;
     }
 
-    const body = (await response.json()) as { submission: MealHomeworkSubmission };
+    const body = (await response.json()) as { submission: CommunityMealHomeworkSubmission };
     setStatus("success");
     setMessage("ส่งการบ้านสำเร็จแล้ว");
     onSubmitted(body.submission);

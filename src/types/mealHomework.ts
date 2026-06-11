@@ -15,3 +15,14 @@ export type MealHomeworkSubmission = {
   product_timezone: "Asia/Bangkok";
   status: "submitted" | "queued_for_review" | "reviewed";
 };
+
+export type CommunityMealHomeworkSubmission = MealHomeworkSubmission & {
+  is_current_member: boolean;
+  member_profile: {
+    avatar_url: string | null;
+    avatar_variant: number;
+    display_name: string;
+    role: "member" | "coach";
+  } | null;
+  photo_url: string | null;
+};

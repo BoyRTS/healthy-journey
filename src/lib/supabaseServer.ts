@@ -84,3 +84,46 @@ export async function uploadSupabaseStorageObject({
 
   return response.json() as Promise<{ Key?: string; Id?: string }>;
 }
+
+export async function createSupabaseStorageSignedUrl({
+  bucket,
+  objectPath,
+  expiresIn = 3600,
+}: {
+  bucket: string;
+  objectPath: string;
+  expiresIn?: number;
+}) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceRoleKey) {
+    throw new Error("Supabase server env is not configured.");
+  }
+
+  const baseUrl = url.replace(/\/$/, "");
+  const safePath = objectPath.split("/").map(encodeURIComponent).join("/");
+  const response = await fetch(`${baseUrl}/storage/v1/object/sign/${bucket}/${safePath}`, {
+    method: "POST",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ expiresIn }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Supabase signed URL failed: ${response.status} ${errorText}`);
+  }
+
+  const body = (await response.json()) as { signedURL?: string; signedUrl?: string };
+  const signedPath = body.signedURL ?? body.signedUrl;
+
+  if (!signedPath) {
+    return null;
+  }
+
+  return signedPath.startsWith("http") ? signedPath : `${baseUrl}/storage/v1${signedPath}`;
+}

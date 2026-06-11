@@ -1,5 +1,10 @@
-import { supabaseServerRequest, uploadSupabaseStorageObject } from "@/lib/supabaseServer";
-import type { MealHomeworkSubmission } from "@/types/mealHomework";
+import {
+  createSupabaseStorageSignedUrl,
+  supabaseServerRequest,
+  uploadSupabaseStorageObject,
+} from "@/lib/supabaseServer";
+import type { CommunityMealHomeworkSubmission, MealHomeworkSubmission } from "@/types/mealHomework";
+import type { MemberProfile } from "@/types/memberProfile";
 
 const MEAL_HOMEWORK_BUCKET = "meal-homework-photos";
 const PRODUCT_TIMEZONE = "Asia/Bangkok";
@@ -59,6 +64,59 @@ export async function getMealHomeworkSubmissions(memberUserId: string) {
 
   return supabaseServerRequest<MealHomeworkSubmission[]>("meal_homework_submissions", {
     query,
+  });
+}
+
+export async function getCommunityMealHomeworkSubmissions(currentUserId: string) {
+  const submissions = await supabaseServerRequest<MealHomeworkSubmission[]>(
+    "meal_homework_submissions",
+    {
+      query: "?order=submitted_at.desc&limit=50",
+    },
+  );
+
+  return enrichCommunitySubmissions(submissions, currentUserId);
+}
+
+export async function enrichCommunitySubmissions(
+  submissions: MealHomeworkSubmission[],
+  currentUserId: string,
+): Promise<CommunityMealHomeworkSubmission[]> {
+  const userIds = [...new Set(submissions.map((submission) => submission.member_user_id))];
+  const profiles = userIds.length ? await getMemberProfilesByUserIds(userIds) : [];
+  const profileByUserId = new Map(profiles.map((profile) => [profile.user_id, profile]));
+
+  return Promise.all(
+    submissions.map(async (submission) => {
+      const profile = profileByUserId.get(submission.member_user_id) ?? null;
+      const photoUrl = await createSupabaseStorageSignedUrl({
+        bucket: submission.storage_bucket,
+        objectPath: submission.storage_path,
+      }).catch(() => null);
+
+      return {
+        ...submission,
+        is_current_member: submission.member_user_id === currentUserId,
+        member_name: submission.member_name ?? profile?.display_name ?? null,
+        member_profile: profile
+          ? {
+              avatar_url: profile.avatar_url,
+              avatar_variant: profile.avatar_variant,
+              display_name: profile.display_name,
+              role: profile.role,
+            }
+          : null,
+        photo_url: photoUrl,
+      };
+    }),
+  );
+}
+
+async function getMemberProfilesByUserIds(userIds: string[]) {
+  const safeIds = userIds.map((userId) => `"${userId.replace(/"/g, '\\"')}"`).join(",");
+
+  return supabaseServerRequest<MemberProfile[]>("member_profiles", {
+    query: `?user_id=in.(${encodeURIComponent(safeIds)})`,
   });
 }
 

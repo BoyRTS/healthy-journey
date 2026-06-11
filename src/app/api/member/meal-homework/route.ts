@@ -1,6 +1,11 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { getMealHomeworkSubmissions, saveMealHomeworkSubmission } from "@/lib/mealHomework";
+import {
+  enrichCommunitySubmissions,
+  getCommunityMealHomeworkSubmissions,
+  saveMealHomeworkSubmission,
+} from "@/lib/mealHomework";
+import { upsertMemberProfile } from "@/lib/memberProfiles";
 
 const MAX_COMPRESSED_FILE_SIZE = 2_500_000;
 
@@ -12,12 +17,13 @@ export async function GET() {
 
     if (!userId) {
       return NextResponse.json(
-        { error: "กรุณาเข้าสู่ระบบก่อนดูรายการส่งอาหาร" },
+        { error: "กรุณาเข้าสู่ระบบก่อนดูห้องอาหาร" },
         { status: 401 },
       );
     }
 
-    const submissions = await getMealHomeworkSubmissions(userId);
+    await syncMemberProfileFromClerk(userId);
+    const submissions = await getCommunityMealHomeworkSubmissions(userId);
 
     return NextResponse.json({ submissions });
   } catch (error) {
@@ -33,7 +39,7 @@ export async function POST(request: Request) {
 
     if (!userId) {
       return NextResponse.json(
-        { error: "กรุณาเข้าสู่ระบบก่อนส่งการบ้านอาหาร" },
+        { error: "กรุณาเข้าสู่ระบบก่อนส่งรูปอาหาร" },
         { status: 401 },
       );
     }
@@ -54,7 +60,7 @@ export async function POST(request: Request) {
 
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
-        { error: "ไฟล์การบ้านอาหารต้องเป็นรูปภาพเท่านั้น" },
+        { error: "ไฟล์ที่ส่งต้องเป็นรูปภาพเท่านั้น" },
         { status: 400 },
       );
     }
@@ -73,8 +79,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const memberName = await getMemberDisplayName(userId);
-    const submission = await saveMealHomeworkSubmission({
+    const memberName = await syncMemberProfileFromClerk(userId);
+    const savedSubmission = await saveMealHomeworkSubmission({
       file,
       imageHeight,
       imageWidth,
@@ -83,6 +89,7 @@ export async function POST(request: Request) {
       memberUserId: userId,
       note: note || null,
     });
+    const [submission] = await enrichCommunitySubmissions([savedSubmission], userId);
 
     return NextResponse.json({ submission });
   } catch (error) {
@@ -102,7 +109,7 @@ function parseOptionalNumber(value: FormDataEntryValue | null) {
   return Math.round(number);
 }
 
-async function getMemberDisplayName(userId: string) {
+async function syncMemberProfileFromClerk(userId: string) {
   try {
     const client = await clerkClient();
     const user = await client.users.getUser(userId);
@@ -113,8 +120,18 @@ async function getMemberDisplayName(userId: string) {
     }
 
     const nickname = "nickname" in profile ? profile.nickname : null;
+    const phone = "phone" in profile ? profile.phone : null;
+    const displayName = typeof nickname === "string" && nickname.trim() ? nickname.trim() : "สมาชิก";
 
-    return typeof nickname === "string" && nickname.trim() ? nickname.trim() : null;
+    await upsertMemberProfile({
+      avatarUrl: user.imageUrl || null,
+      displayName,
+      phone: typeof phone === "string" ? phone : null,
+      role: "member",
+      userId,
+    });
+
+    return displayName;
   } catch {
     return null;
   }
