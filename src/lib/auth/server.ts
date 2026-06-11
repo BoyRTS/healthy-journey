@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import type { HealthyJourneyRole } from "@/lib/authRouting";
 import { healthyJourneyAuthRoutes } from "@/lib/auth/routes";
+import { upsertMemberProfile } from "@/lib/memberProfiles";
 
 type AuthMetadata = Record<string, unknown>;
 
@@ -125,7 +126,7 @@ export async function saveHealthyJourneyMemberProfile(
 
   const client = await clerkClient();
 
-  await client.users.updateUserMetadata(userId, {
+  const updatedUser = await client.users.updateUserMetadata(userId, {
     publicMetadata: {
       ...publicMetadata,
       role: "member",
@@ -135,5 +136,13 @@ export async function saveHealthyJourneyMemberProfile(
       memberOnboardingComplete: true,
       memberHealthProfile: profile,
     },
+  });
+
+  await upsertMemberProfile({
+    avatarUrl: updatedUser.imageUrl || null,
+    displayName: profile.nickname,
+    phone: profile.phone,
+    role: "member",
+    userId,
   });
 }

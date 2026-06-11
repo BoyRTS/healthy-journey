@@ -1,6 +1,7 @@
 type SupabaseRequestOptions = {
   method?: "GET" | "POST" | "PATCH" | "DELETE";
   body?: unknown;
+  prefer?: string;
   query?: string;
 };
 
@@ -29,7 +30,7 @@ export async function supabaseServerRequest<T>(
       apikey: serviceRoleKey,
       Authorization: `Bearer ${serviceRoleKey}`,
       "Content-Type": "application/json",
-      Prefer: "return=representation",
+      Prefer: options.prefer ?? "return=representation",
     },
     body: options.body ? JSON.stringify(options.body) : undefined,
   });
