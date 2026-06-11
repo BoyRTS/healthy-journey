@@ -54,6 +54,14 @@ export async function saveMealHomeworkSubmission(input: SaveMealHomeworkInput) {
   return rows[0];
 }
 
+export async function getMealHomeworkSubmissions(memberUserId: string) {
+  const query = `?member_user_id=eq.${encodeURIComponent(memberUserId)}&order=submitted_at.desc&limit=20`;
+
+  return supabaseServerRequest<MealHomeworkSubmission[]>("meal_homework_submissions", {
+    query,
+  });
+}
+
 function createMealHomeworkPath({
   fileName,
   memberUserId,

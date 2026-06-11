@@ -1,8 +1,32 @@
 import { NextResponse } from "next/server";
 import { getHealthyJourneyCurrentUser } from "@/lib/auth/server";
-import { saveMealHomeworkSubmission } from "@/lib/mealHomework";
+import { getMealHomeworkSubmissions, saveMealHomeworkSubmission } from "@/lib/mealHomework";
 
 const MAX_COMPRESSED_FILE_SIZE = 2_500_000;
+
+export async function GET() {
+  try {
+    const user = await getHealthyJourneyCurrentUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "กรุณาเข้าสู่ระบบก่อนดูรายการส่งอาหาร" },
+        { status: 401 },
+      );
+    }
+
+    const submissions = await getMealHomeworkSubmissions(user.id);
+
+    return NextResponse.json({ submissions });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+
+    return NextResponse.json(
+      { error: message },
+      { status: 500 },
+    );
+  }
+}
 
 export async function POST(request: Request) {
   try {
