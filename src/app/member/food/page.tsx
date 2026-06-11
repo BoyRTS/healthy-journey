@@ -1,5 +1,6 @@
 "use client";
 
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { compressMealPhoto, type CompressedMealPhoto } from "@/lib/compressMealPhoto";
 import type { MealHomeworkSubmission } from "@/types/mealHomework";
@@ -9,14 +10,22 @@ type HomeworkStatus = "idle" | "compressing" | "submitting" | "success" | "error
 const mealOptions = ["เช้า", "กลางวัน", "เย็น", "มื้อว่าง"] as const;
 
 export default function MemberFoodPage() {
+  const { isLoaded, isSignedIn } = useUser();
   const [isHomeworkOpen, setIsHomeworkOpen] = useState(false);
   const [isStickerOpen, setIsStickerOpen] = useState(false);
   const [submissions, setSubmissions] = useState<MealHomeworkSubmission[]>([]);
   const [isLoadingSubmissions, setIsLoadingSubmissions] = useState(true);
 
   async function loadSubmissions() {
+    if (!isSignedIn) {
+      setIsLoadingSubmissions(false);
+      return;
+    }
+
     setIsLoadingSubmissions(true);
-    const response = await fetch("/api/member/meal-homework");
+    const response = await fetch("/api/member/meal-homework", {
+      credentials: "include",
+    });
 
     if (!response.ok) {
       setIsLoadingSubmissions(false);
@@ -29,8 +38,12 @@ export default function MemberFoodPage() {
   }
 
   useEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+
     loadSubmissions();
-  }, []);
+  }, [isLoaded, isSignedIn]);
 
   return (
     <main className="min-h-screen bg-[#EDE1D0] font-[var(--font-sans-thai)] text-[#3E352B] sm:px-3 sm:py-6">
@@ -63,11 +76,13 @@ export default function MemberFoodPage() {
             <section className="flex-1 space-y-4 overflow-y-auto px-3 py-4 pb-[190px]">
               <CoachIntroBubble />
 
+              {isLoaded && !isSignedIn ? <SignInRequiredBubble /> : null}
+
               {isLoadingSubmissions ? (
                 <StatusBubble text="กำลังโหลดรายการส่งจริงล่าสุด..." />
               ) : null}
 
-              {!isLoadingSubmissions && submissions.length === 0 ? (
+              {isSignedIn && !isLoadingSubmissions && submissions.length === 0 ? (
                 <StatusBubble text="ยังไม่มีรายการส่งจริงในห้องนี้ เมื่อส่งรูปอาหารสำเร็จ รายการจะขึ้นในห้องทันที" />
               ) : null}
 
@@ -80,7 +95,11 @@ export default function MemberFoodPage() {
               <div className="grid grid-cols-3 gap-2">
                 <button
                   className="flex min-h-[64px] flex-col items-center justify-center gap-1 rounded-[22px] bg-[#8F9F7E] px-2.5 py-2.5 text-center text-[12px] font-bold leading-[1.15] text-[#26301E] shadow-[0_8px_18px_rgba(82,65,45,0.12)]"
-                  onClick={() => setIsHomeworkOpen(true)}
+                  onClick={() => {
+                    if (isSignedIn) {
+                      setIsHomeworkOpen(true);
+                    }
+                  }}
                   type="button"
                 >
                   <MealPhotoIcon className="h-5 w-5 shrink-0" />
@@ -157,6 +176,24 @@ function StatusBubble({ text }: { text: string }) {
   return (
     <article className="rounded-[20px] border border-white/30 bg-white/20 px-4 py-4 text-center text-[13px] font-semibold leading-6 text-black shadow-[0_8px_32px_0_rgba(0,0,0,0.22)] backdrop-blur-[16px] [-webkit-backdrop-filter:blur(16px)]">
       {text}
+    </article>
+  );
+}
+
+function SignInRequiredBubble() {
+  return (
+    <article className="rounded-[20px] border border-white/30 bg-white/20 px-4 py-4 text-center text-black shadow-[0_8px_32px_0_rgba(0,0,0,0.22)] backdrop-blur-[16px] [-webkit-backdrop-filter:blur(16px)]">
+      <p className="text-[13px] font-semibold leading-6">
+        กรุณาเข้าสู่ระบบก่อนส่งการบ้านอาหาร
+      </p>
+      <SignInButton mode="modal">
+        <button
+          className="mt-3 rounded-full bg-black px-4 py-2 text-[12px] font-bold text-white"
+          type="button"
+        >
+          เข้าสู่ระบบ
+        </button>
+      </SignInButton>
     </article>
   );
 }
@@ -249,6 +286,7 @@ function RealHomeworkSheet({
     formData.append("imageHeight", String(compressedPhoto.height));
 
     const response = await fetch("/api/member/meal-homework", {
+      credentials: "include",
       method: "POST",
       body: formData,
     });
