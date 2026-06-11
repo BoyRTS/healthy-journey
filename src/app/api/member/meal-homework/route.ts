@@ -1,21 +1,23 @@
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { getHealthyJourneyCurrentUser } from "@/lib/auth/server";
 import { getMealHomeworkSubmissions, saveMealHomeworkSubmission } from "@/lib/mealHomework";
 
 const MAX_COMPRESSED_FILE_SIZE = 2_500_000;
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
-    const user = await getHealthyJourneyCurrentUser();
+    const { userId } = await auth();
 
-    if (!user) {
+    if (!userId) {
       return NextResponse.json(
         { error: "กรุณาเข้าสู่ระบบก่อนดูรายการส่งอาหาร" },
         { status: 401 },
       );
     }
 
-    const submissions = await getMealHomeworkSubmissions(user.id);
+    const submissions = await getMealHomeworkSubmissions(userId);
 
     return NextResponse.json({ submissions });
   } catch (error) {
@@ -30,9 +32,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const user = await getHealthyJourneyCurrentUser();
+    const { userId } = await auth();
 
-    if (!user) {
+    if (!userId) {
       return NextResponse.json(
         { error: "กรุณาเข้าสู่ระบบก่อนส่งการบ้านอาหาร" },
         { status: 401 },
@@ -74,14 +76,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const memberName = getMemberDisplayName(user.privateMetadata);
+    const memberName = await getMemberDisplayName(userId);
     const submission = await saveMealHomeworkSubmission({
       file,
       imageHeight,
       imageWidth,
       mealLabel,
       memberName,
-      memberUserId: user.id,
+      memberUserId: userId,
       note: note || null,
     });
 
@@ -106,14 +108,20 @@ function parseOptionalNumber(value: FormDataEntryValue | null) {
   return Math.round(number);
 }
 
-function getMemberDisplayName(privateMetadata: Record<string, unknown>) {
-  const profile = privateMetadata.memberHealthProfile;
+async function getMemberDisplayName(userId: string) {
+  try {
+    const client = await clerkClient();
+    const user = await client.users.getUser(userId);
+    const profile = user.privateMetadata.memberHealthProfile;
 
-  if (!profile || typeof profile !== "object") {
+    if (!profile || typeof profile !== "object") {
+      return null;
+    }
+
+    const nickname = "nickname" in profile ? profile.nickname : null;
+
+    return typeof nickname === "string" && nickname.trim() ? nickname.trim() : null;
+  } catch {
     return null;
   }
-
-  const nickname = "nickname" in profile ? profile.nickname : null;
-
-  return typeof nickname === "string" && nickname.trim() ? nickname.trim() : null;
 }
