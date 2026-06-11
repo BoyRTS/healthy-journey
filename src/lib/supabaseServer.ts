@@ -45,3 +45,41 @@ export async function supabaseServerRequest<T>(
 
   return (await response.json()) as T;
 }
+
+export async function uploadSupabaseStorageObject({
+  bucket,
+  contentType,
+  objectPath,
+  body,
+}: {
+  bucket: string;
+  contentType: string;
+  objectPath: string;
+  body: ArrayBuffer;
+}) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceRoleKey) {
+    throw new Error("Supabase server env is not configured.");
+  }
+
+  const storageUrl = `${url.replace(/\/$/, "")}/storage/v1/object/${bucket}/${objectPath}`;
+  const response = await fetch(storageUrl, {
+    method: "POST",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": contentType,
+      "x-upsert": "false",
+    },
+    body,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Supabase storage upload failed: ${response.status} ${errorText}`);
+  }
+
+  return response.json() as Promise<{ Key?: string; Id?: string }>;
+}
