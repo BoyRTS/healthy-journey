@@ -90,10 +90,10 @@ export default function MemberPage() {
       }
       backHref="/member/result"
       backLabel="ผลลัพธ์ของฉัน"
-      subtitle={"ที่นี่คุณไม่ต้องดูแลตัวเองเพียงลำพัง เราจะค่อยๆ เดินไปด้วยกัน\nทีละมื้อ ทีละวัน พร้อมคำแนะนำ การติดตาม และแรงสนับสนุน เพื่อช่วยให้คุณก้าวไปสู่เป้าหมายได้อย่างมั่นคง"}
+      subtitle={"ที่นี่คุณไม่ต้องดูแลตัวเองเพียงลำพัง เราจะค่อยๆ เดินไปด้วยกัน\nทีละมื้อ ทีละวัน พร้อมคำแนะนำ การติดตาม และแรงสนับสนุน\nเพื่อช่วยให้คุณก้าวไปสู่เป้าหมายได้\u00A0อย่างมั่นคง"}
       subtitleClassName="text-[0.9rem] sm:text-base"
       title="ยินดีต้อนรับสู่ Healthy Journey"
-      titleClassName="text-[1.26rem] sm:text-[1.575rem]"
+      titleClassName="text-[1.26rem] leading-[0.94] sm:text-[1.575rem]"
     >
       <div className="flex h-full min-h-[calc(100vh-7.5rem)] justify-center bg-[var(--cream)] lg:items-start lg:p-6">
         <div className="relative h-full min-h-[calc(100vh-7.5rem)] w-full overflow-hidden bg-[var(--cream)] lg:h-auto lg:min-h-0 lg:max-w-[520px] lg:aspect-[941/1672] lg:rounded-[1.75rem] lg:shadow-[0_24px_60px_rgba(83,96,56,0.16)]">
