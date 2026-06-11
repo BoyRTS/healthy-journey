@@ -114,23 +114,27 @@ export default function MemberFoodPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#EDE1D0] font-[var(--font-sans-thai)] text-[#30291F] sm:px-3 sm:py-6">
-      <div className="mx-auto min-h-screen w-full overflow-hidden bg-[#F8F1E7] sm:min-h-[calc(100vh-3rem)] sm:max-w-[430px] sm:rounded-[32px] sm:border sm:border-[#E6D0BC] sm:shadow-[0_24px_70px_rgba(82,65,45,0.22)]">
-        <header className="border-b border-[#A98970] bg-[#9E826B] px-5 py-5">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#FFF8EC]/75">
-            Meal homework
-          </p>
-          <h1 className="mt-2 font-[var(--font-serif-thai)] text-[26px] font-semibold leading-tight text-[#FFF8EC]">
-            ส่งการบ้านมื้ออาหาร
-          </h1>
-          <p className="mt-2 text-[13px] font-medium leading-6 text-[#FFF8EC]/84">
-            อัปโหลดรูปอาหารจริง ระบบจะย่อรูปก่อนบันทึก แล้วส่งให้โค้ชตรวจในระบบ Healthy Journey
-          </p>
+    <main className="min-h-screen bg-[#EFE4D3] px-3 py-4 font-[var(--font-sans-thai)] text-[#30291F] sm:py-6">
+      <div className="mx-auto min-h-[calc(100vh-2rem)] w-full max-w-[430px] overflow-hidden rounded-[32px] border border-[#E6D0BC] bg-[#FFF8EC] shadow-[0_24px_70px_rgba(82,65,45,0.18)]">
+        <header className="relative overflow-hidden bg-[#9E826B] px-5 pb-6 pt-5 text-[#FFF8EC]">
+          <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[#F4D6A5]/25" />
+          <div className="absolute -bottom-16 left-8 h-32 w-32 rounded-full bg-[#8F9F7E]/24" />
+          <div className="relative">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#FFF8EC]/75">
+              Meal homework
+            </p>
+            <h1 className="mt-2 font-[var(--font-serif-thai)] text-[27px] font-semibold leading-tight">
+              ส่งการบ้านมื้ออาหาร
+            </h1>
+            <p className="mt-2 text-[13px] font-medium leading-6 text-[#FFF8EC]/86">
+              อัปโหลดรูปอาหารจริง ระบบจะย่อรูปก่อนบันทึก แล้วส่งให้โค้ชตรวจใน Healthy Journey
+            </p>
+          </div>
         </header>
 
         <section className="space-y-5 px-4 py-5">
-          <div className="rounded-[28px] border border-[#E6D0BC] bg-[#FFF9EF] p-4 shadow-[0_14px_34px_rgba(82,65,45,0.08)]">
-            <label className="flex min-h-52 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[24px] border border-dashed border-[#B89A7E] bg-[#F5E8D6] text-center">
+          <section className="rounded-[28px] border border-[#E6D0BC] bg-[#FFFDF7] p-4 shadow-[0_14px_34px_rgba(82,65,45,0.08)]">
+            <label className="flex min-h-52 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[24px] border border-dashed border-[#B89A7E] bg-[#F5E8D6] text-center transition hover:bg-[#F1DFC7]">
               <input
                 accept="image/*"
                 className="sr-only"
@@ -145,10 +149,12 @@ export default function MemberFoodPage() {
                 />
               ) : (
                 <span className="flex flex-col items-center px-5 py-8">
-                  <MealPhotoIcon className="h-10 w-10 text-[#536044]" />
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-[#E8D8C1] text-[#536044]">
+                    <MealPhotoIcon className="h-7 w-7" />
+                  </span>
                   <span className="mt-3 text-[16px] font-bold text-[#30291F]">เลือกรูปอาหาร</span>
                   <span className="mt-1 text-[12px] font-semibold leading-5 text-[#6F6255]">
-                    รองรับทุกมื้อที่ต้องส่งวันนี้ รูปจะถูกปรับขนาดก่อนเก็บ
+                    รูปจะถูกปรับขนาดก่อนเก็บ เพื่อให้ระบบเร็วและประหยัดค่าใช้จ่าย
                   </span>
                 </span>
               )}
@@ -156,7 +162,8 @@ export default function MemberFoodPage() {
 
             {compressedPhoto ? (
               <p className="mt-3 text-[11px] font-semibold text-[#6F6255]">
-                รูปถูกปรับเป็น {compressedPhoto.width}x{compressedPhoto.height}px · {(compressedPhoto.compressedSize / 1024).toFixed(0)}KB
+                รูปถูกปรับเป็น {compressedPhoto.width}x{compressedPhoto.height}px ·{" "}
+                {(compressedPhoto.compressedSize / 1024).toFixed(0)}KB
               </p>
             ) : null}
 
@@ -165,9 +172,9 @@ export default function MemberFoodPage() {
               <div className="grid grid-cols-4 gap-2">
                 {mealOptions.map((meal) => (
                   <button
-                    className={`rounded-full px-3 py-2 text-[12px] font-bold transition ${
+                    className={`rounded-full px-2.5 py-2 text-[12px] font-bold transition ${
                       mealLabel === meal
-                        ? "bg-[#536044] text-[#FFF8EC]"
+                        ? "bg-[#536044] text-[#FFF8EC] shadow-[0_8px_18px_rgba(83,96,68,0.22)]"
                         : "bg-[#E8D8C1] text-[#4D4034]"
                     }`}
                     key={meal}
@@ -215,9 +222,9 @@ export default function MemberFoodPage() {
             >
               {status === "submitting" ? "กำลังส่ง..." : "ส่งการบ้านให้โค้ช"}
             </button>
-          </div>
+          </section>
 
-          <section className="rounded-[28px] border border-[#E6D0BC] bg-[#FFF9EF] p-4 shadow-[0_14px_34px_rgba(82,65,45,0.08)]">
+          <section className="rounded-[28px] border border-[#E6D0BC] bg-[#FFFDF7] p-4 shadow-[0_14px_34px_rgba(82,65,45,0.08)]">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#8F7A67]">
