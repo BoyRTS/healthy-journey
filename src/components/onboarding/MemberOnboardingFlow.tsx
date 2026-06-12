@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 type MemberOnboardingFlowProps = {
@@ -174,24 +175,36 @@ export function MemberOnboardingFlow({ action }: MemberOnboardingFlowProps) {
 
 function IntroStep({ onNext }: { onNext: () => void }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center text-center">
-      <HeroIllustration />
-      <p className="text-sm font-black uppercase tracking-[0.2em] text-[var(--olive)]">Healthy Journey</p>
-      <h1 className="display-serif mt-4 text-5xl font-black leading-tight text-[var(--charcoal)]">
-        สวัสดีค่ะ
-        <br />
-        มาตั้งต้นแผนของคุณกัน
-      </h1>
-      <p className="mt-5 text-lg leading-8 text-[var(--muted)]">
-        ตอบคำถามสั้นๆ เพื่อให้โค้ชเห็นภาพสุขภาพ เป้าหมาย และข้อควรระวังของคุณตั้งแต่วันแรก
-      </p>
-      <button
-        className="mt-12 w-full rounded-full bg-[linear-gradient(135deg,var(--olive),var(--sage))] px-6 py-4 text-2xl font-black text-white shadow-[0_18px_34px_rgba(79,99,70,0.24)] transition hover:-translate-y-0.5 active:scale-[0.98]"
-        onClick={onNext}
-        type="button"
-      >
-        เริ่มเลย
-      </button>
+    <div className="relative flex flex-1 flex-col justify-end overflow-hidden rounded-[2rem] border border-[rgba(75,65,49,0.08)] shadow-[0_24px_60px_rgba(70,56,36,0.12)]">
+      <Image
+        alt="Healthy Journey onboarding background"
+        className="object-cover"
+        fill
+        priority
+        sizes="(min-width: 768px) 460px, 100vw"
+        src="/images/background_food1.png"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,248,0.12)_0%,rgba(255,253,248,0.28)_42%,rgba(255,251,245,0.94)_72%,rgba(255,249,241,0.98)_100%)]" />
+      <div className="relative z-10 flex min-h-[78vh] flex-col justify-end px-6 pb-8 pt-10 text-center sm:px-8">
+        <div className="rounded-[2rem] bg-[rgba(255,251,245,0.72)] px-5 py-6 backdrop-blur-[2px]">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-[var(--olive)]">Healthy Journey</p>
+          <h1 className="display-serif mt-4 text-5xl font-black leading-tight text-[var(--charcoal)]">
+            สวัสดีค่ะ
+            <br />
+            มาตั้งต้นแผนของคุณกัน
+          </h1>
+          <p className="mt-5 text-lg leading-8 text-[var(--muted)]">
+            ตอบคำถามสั้นๆ เพื่อให้โค้ชเห็นภาพสุขภาพ เป้าหมาย และข้อควรระวังของคุณตั้งแต่วันแรก
+          </p>
+        </div>
+        <button
+          className="mt-6 w-full rounded-full bg-[linear-gradient(135deg,var(--olive),var(--sage))] px-6 py-4 text-2xl font-black text-white shadow-[0_18px_34px_rgba(79,99,70,0.24)] transition hover:-translate-y-0.5 active:scale-[0.98]"
+          onClick={onNext}
+          type="button"
+        >
+          เริ่มเลย
+        </button>
+      </div>
     </div>
   );
 }
@@ -599,29 +612,6 @@ function AmbientDecor() {
       <div className="absolute right-10 top-40 h-16 w-16 rounded-full bg-[rgba(143,159,126,0.28)] blur-[2px]" />
       <div className="absolute -left-10 top-[48%] h-32 w-32 rounded-full bg-[rgba(239,227,211,0.9)] blur-xl" />
       <div className="absolute -right-16 bottom-24 h-40 w-40 rounded-full bg-[rgba(234,215,165,0.5)] blur-2xl" />
-    </div>
-  );
-}
-
-function HeroIllustration() {
-  return (
-    <div className="relative mb-10 h-56 w-full">
-      <div className="absolute inset-x-2 top-8 h-44 rounded-[3rem] bg-[radial-gradient(circle_at_30%_20%,rgba(255,253,248,0.92),transparent_34%),radial-gradient(circle_at_78%_35%,rgba(234,215,165,0.55),transparent_30%),linear-gradient(160deg,#f2eadf,#fbf7f0)] shadow-[inset_0_0_60px_rgba(255,255,255,0.75),0_22px_60px_rgba(70,56,36,0.08)]" />
-      <div className="absolute left-6 top-4 h-12 w-12 -rotate-12 rounded-[1.2rem] bg-white shadow-[0_12px_26px_rgba(70,56,36,0.12)]">
-        <div className="mx-auto mt-3 h-2 w-7 rounded-full bg-[var(--olive)]" />
-        <div className="mx-auto mt-2 h-2 w-5 rounded-full bg-[var(--gold)]" />
-      </div>
-      <div className="absolute right-8 top-2 h-14 w-14 rounded-[1.5rem] bg-[#d49a7b] shadow-[0_14px_28px_rgba(212,154,123,0.24)]">
-        <div className="ml-7 mt-3 h-2 w-4 rounded-full bg-white/80" />
-      </div>
-      <div className="absolute bottom-3 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#ffffff,var(--gold-soft)_34%,#7c9881_100%)] shadow-[0_18px_42px_rgba(79,99,70,0.24)]">
-        <div className="mx-auto mt-8 flex w-12 justify-between">
-          <span className="h-2 w-2 rounded-full bg-[var(--charcoal)]" />
-          <span className="h-2 w-2 rounded-full bg-[var(--charcoal)]" />
-        </div>
-        <div className="mx-auto mt-3 h-2 w-8 rounded-full bg-white/90" />
-      </div>
-      <div className="absolute bottom-8 right-10 h-12 w-12 rotate-45 rounded-[1rem] bg-[var(--gold-soft)] shadow-[0_12px_24px_rgba(203,166,93,0.18)]" />
     </div>
   );
 }
