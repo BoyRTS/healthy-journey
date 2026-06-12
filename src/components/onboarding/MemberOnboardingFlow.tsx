@@ -30,7 +30,7 @@ const initialValues: Record<FieldName, string> = {
   goal: "ลดน้ำหนัก",
   motivation: "มีพลังตลอดวัน",
   gender: "ไม่ระบุ",
-  birthYear: "1995",
+  birthYear: "30",
   heightCm: "165",
   weightKg: "70",
   desiredWeightKg: "63",
@@ -72,6 +72,8 @@ function joinToggleValue(current: string, value: string) {
 
   return [...values, value].join(", ");
 }
+
+const ageOptions = Array.from({ length: 73 }, (_, index) => `${index + 18}`);
 
 export function MemberOnboardingFlow({ action }: MemberOnboardingFlowProps) {
   const [step, setStep] = useState(0);
@@ -300,11 +302,11 @@ function BasicsStep({
           options={["หญิง", "ชาย", "ไม่ระบุ"]}
           value={values.gender}
         />
-        <TextField
+        <SelectField
           label="อายุ"
           name="birthYear"
           onChange={(value) => onChange("birthYear", value)}
-          type="number"
+          options={ageOptions}
           value={values.birthYear}
         />
       </div>
@@ -516,6 +518,40 @@ function TextField({
         type={type}
         value={value}
       />
+    </label>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-black uppercase tracking-[0.16em] text-[var(--muted)]">
+        {label}
+      </span>
+      <select
+        className="w-full rounded-[1.35rem] border border-[rgba(75,65,49,0.1)] bg-[rgba(255,253,248,0.95)] px-5 py-4 text-lg font-bold text-[var(--charcoal)] outline-none shadow-[0_10px_28px_rgba(70,56,36,0.05)] transition focus:border-[var(--sage)] focus:ring-4 focus:ring-[rgba(143,159,126,0.14)]"
+        name={name}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }
