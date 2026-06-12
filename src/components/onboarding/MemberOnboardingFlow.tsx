@@ -188,10 +188,10 @@ function IntroStep({ onNext }: { onNext: () => void }) {
       <div className="relative z-10 flex min-h-[78vh] flex-col justify-end px-6 pb-8 pt-10 text-center sm:px-8">
         <div className="rounded-[2rem] bg-[rgba(255,251,245,0.72)] px-5 py-6 backdrop-blur-[2px]">
           <p className="text-sm font-black uppercase tracking-[0.2em] text-[var(--olive)]">Healthy Journey</p>
-          <h1 className="display-serif mt-4 text-5xl font-black leading-tight text-[var(--charcoal)]">
+          <h1 className="display-serif mt-4 text-[1.75rem] font-black leading-tight text-[var(--charcoal)]">
             สวัสดีค่ะ
             <br />
-            มาตั้งต้นแผนของคุณกัน
+            มาตั้งต้นวางแผนสุขภาพของคุณด้วยกัน
           </h1>
           <p className="mt-5 text-lg leading-8 text-[var(--muted)]">
             ตอบคำถามสั้นๆ เพื่อให้โค้ชเห็นภาพสุขภาพ เป้าหมาย และข้อควรระวังของคุณตั้งแต่วันแรก
