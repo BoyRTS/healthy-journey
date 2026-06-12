@@ -227,7 +227,7 @@ function ChoiceStep({
   return (
     <div>
       {eyebrow ? <p className="mb-3 text-sm font-black text-[var(--olive)]">{eyebrow}</p> : null}
-      <h1 className="display-serif text-2xl font-black leading-tight text-[var(--charcoal)]">{title}</h1>
+      <h1 className="text-2xl font-black leading-[1.15] tracking-[-0.02em] text-[var(--charcoal)]">{title}</h1>
       <div className="mt-8 space-y-4">
         {options.map((option) => {
           const selected = option === value;
@@ -275,7 +275,7 @@ function BasicsStep({
 }) {
   return (
     <div>
-      <h1 className="display-serif text-2xl font-black leading-tight text-[var(--charcoal)]">ขอรู้จักคุณอีกนิด</h1>
+      <h1 className="text-2xl font-black leading-[1.15] tracking-[-0.02em] text-[var(--charcoal)]">ขอรู้จักคุณอีกนิด</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">
         ข้อมูลนี้ใช้ให้โค้ชเรียกชื่อและติดต่อสมาชิกได้สะดวกขึ้น
       </p>
@@ -327,7 +327,7 @@ function BodyStep({
 
   return (
     <div>
-      <h1 className="display-serif text-4xl font-black leading-tight text-[var(--charcoal)]">ข้อมูลร่างกายปัจจุบัน</h1>
+      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">ข้อมูลร่างกายปัจจุบัน</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">
         ใช้เป็นฐานให้โค้ชดูแนวโน้ม ไม่ใช่การวินิจฉัยทางการแพทย์
       </p>
@@ -369,7 +369,7 @@ function GoalPlanStep({
 }) {
   return (
     <div>
-      <h1 className="display-serif text-4xl font-black leading-tight text-[var(--charcoal)]">เป้าหมายและไลฟ์สไตล์</h1>
+      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">เป้าหมายและไลฟ์สไตล์</h1>
       <div className="mt-8 space-y-6">
         <TextField
           label="น้ำหนักเป้าหมาย (kg)"
@@ -411,7 +411,7 @@ function HealthContextStep({
 }) {
   return (
     <div>
-      <h1 className="display-serif text-4xl font-black leading-tight text-[var(--charcoal)]">มีเรื่องสุขภาพที่โค้ชควรรู้ไหม?</h1>
+      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">มีเรื่องสุขภาพที่โค้ชควรรู้ไหม?</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">เลือกได้หลายข้อ หรือข้ามได้ถ้ายังไม่แน่ใจ</p>
       <ToggleGrid
         onToggle={(value) => onToggle("chronicConditions", value)}
@@ -433,7 +433,7 @@ function FoodContextStep({
 }) {
   return (
     <div>
-      <h1 className="display-serif text-4xl font-black leading-tight text-[var(--charcoal)]">อาหารที่ควรรู้ก่อนเริ่ม</h1>
+      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">อาหารที่ควรรู้ก่อนเริ่ม</h1>
       <div className="mt-8 space-y-7">
         <ChoicePills
           label="สไตล์การกิน"
@@ -470,7 +470,7 @@ function ReadyStep({ values }: { values: Record<FieldName, string> }) {
   return (
     <div className="flex flex-1 flex-col justify-center text-center">
       <TrophyVisual />
-      <h1 className="display-serif text-5xl font-black leading-tight text-[var(--charcoal)]">แผนเริ่มต้นพร้อมแล้ว</h1>
+      <h1 className="text-5xl font-black leading-[1.05] tracking-[-0.03em] text-[var(--charcoal)]">แผนเริ่มต้นพร้อมแล้ว</h1>
       <p className="mt-5 text-lg leading-8 text-[var(--muted)]">
         โค้ชจะเห็นข้อมูลของ {values.nickname || "สมาชิก"} เพื่อช่วยเลือกแนวทางและติดตามการบ้านได้เหมาะขึ้น
       </p>
