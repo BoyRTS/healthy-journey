@@ -22,7 +22,8 @@ type FieldName =
   | "chronicConditions"
   | "eatingStyle"
   | "allergies"
-  | "additiveReactions";
+  | "additiveReactions"
+  | "profilePhoto";
 
 const initialValues: Record<FieldName, string> = {
   nickname: "",
@@ -40,6 +41,7 @@ const initialValues: Record<FieldName, string> = {
   eatingStyle: "สมดุล",
   allergies: "",
   additiveReactions: "",
+  profilePhoto: "",
 };
 
 const goals = ["ลดน้ำหนัก", "คุมน้ำหนัก", "เพิ่มกล้ามเนื้อ", "สุขภาพดีขึ้น", "ฟิตขึ้น"];
@@ -130,7 +132,11 @@ export function MemberOnboardingFlow({ action }: MemberOnboardingFlowProps) {
             <input key={name} name={name} type="hidden" value={value} />
           ))}
 
-          {step === 0 ? <IntroStep onNext={nextStep} /> : null}
+          {step === 0 ? (
+            <IntroStep
+              onNext={nextStep}
+            />
+          ) : null}
           {step === 1 ? (
             <ChoiceStep
               eyebrow="เริ่มจากเป้าหมายหลัก"
@@ -175,7 +181,39 @@ export function MemberOnboardingFlow({ action }: MemberOnboardingFlowProps) {
   );
 }
 
-function IntroStep({ onNext }: { onNext: () => void }) {
+async function resizeProfilePhoto(file: File): Promise<string> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const size = 300;
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(e.target?.result as string);
+          return;
+        }
+        const min = Math.min(img.width, img.height);
+        const sx = (img.width - min) / 2;
+        const sy = (img.height - min) / 2;
+        ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+        const webp = canvas.toDataURL("image/webp", 0.85);
+        resolve(webp !== "data:," ? webp : canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function IntroStep({
+  onNext,
+}: {
+  onNext: () => void;
+}) {
   return (
     <div className="relative flex flex-1 flex-col justify-end overflow-hidden rounded-[2rem] border border-[rgba(75,65,49,0.08)] shadow-[0_24px_60px_rgba(70,56,36,0.12)]">
       <Image
@@ -190,7 +228,7 @@ function IntroStep({ onNext }: { onNext: () => void }) {
       <div className="relative z-10 flex min-h-[78vh] flex-col justify-end px-6 pb-8 pt-10 text-center sm:px-8">
         <div className="rounded-[2rem] bg-[rgba(255,251,245,0.72)] px-5 py-6 backdrop-blur-[2px]">
           <p className="text-sm font-black uppercase tracking-[0.2em] text-[var(--olive)]">Healthy Journey</p>
-          <h1 className="display-serif mt-4 text-[1.75rem] font-black leading-tight text-[var(--charcoal)]">
+          <h1 className="onboarding-heading mt-4 text-[1.75rem] text-[var(--charcoal)]">
             สวัสดีค่ะ
             <br />
             มาตั้งต้นวางแผนสุขภาพของคุณด้วยกัน
@@ -227,7 +265,7 @@ function ChoiceStep({
   return (
     <div>
       {eyebrow ? <p className="mb-3 text-sm font-black text-[var(--olive)]">{eyebrow}</p> : null}
-      <h1 className="text-2xl font-black leading-[1.15] tracking-[-0.02em] text-[var(--charcoal)]">{title}</h1>
+      <h1 className="onboarding-heading text-2xl text-[var(--charcoal)]">{title}</h1>
       <div className="mt-8 space-y-4">
         {options.map((option) => {
           const selected = option === value;
@@ -275,11 +313,74 @@ function BasicsStep({
 }) {
   return (
     <div>
-      <h1 className="text-2xl font-black leading-[1.15] tracking-[-0.02em] text-[var(--charcoal)]">ขอรู้จักคุณอีกนิด</h1>
+      <h1 className="onboarding-heading text-2xl text-[var(--charcoal)]">ขอรู้จักคุณอีกนิด</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">
         ข้อมูลนี้ใช้ให้โค้ชเรียกชื่อและติดต่อสมาชิกได้สะดวกขึ้น
       </p>
       <div className="mt-8 space-y-5">
+        {/* Avatar picker */}
+        <div className="flex flex-col items-center pb-4">
+          <label
+            aria-label="เพิ่มรูปโปรไฟล์"
+            className="group relative cursor-pointer"
+            htmlFor="profile-photo-input"
+          >
+            <div className="h-28 w-28 overflow-hidden rounded-full bg-[var(--beige-soft)] ring-4 ring-white shadow-[0_12px_32px_rgba(70,56,36,0.12)] transition group-hover:ring-[var(--sage-soft)]">
+              {values.profilePhoto ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt="รูปโปรไฟล์"
+                  className="h-full w-full object-cover"
+                  src={values.profilePhoto}
+                />
+              ) : (
+                <div className="flex h-full w-full flex-col items-center justify-center gap-1 text-[var(--muted)]">
+                  <svg
+                    aria-hidden="true"
+                    className="h-10 w-10 opacity-40"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.4}
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" strokeLinecap="round" />
+                  </svg>
+                </div>
+              )}
+            </div>
+            {/* Camera badge */}
+            <div className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--olive)] shadow-md ring-2 ring-white transition group-hover:bg-[#3d4f35]">
+              <svg
+                aria-hidden="true"
+                className="h-4 w-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2 2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+            </div>
+            <input
+              accept="image/*"
+              className="sr-only"
+              id="profile-photo-input"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const dataUrl = await resizeProfilePhoto(file);
+                onChange("profilePhoto", dataUrl);
+              }}
+              type="file"
+            />
+          </label>
+          <p className="mt-3 text-xs text-[var(--muted)]">
+            {values.profilePhoto ? "เปลี่ยนรูปได้ตลอด" : "เพิ่มรูปโปรไฟล์ (ไม่บังคับ)"}
+          </p>
+        </div>
+
         <TextField
           label="ชื่อเล่นหรือชื่อที่อยากให้เรียก"
           name="nickname"
@@ -327,10 +428,11 @@ function BodyStep({
 
   return (
     <div>
-      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">ข้อมูลร่างกายปัจจุบัน</h1>
+      <h1 className="onboarding-heading text-4xl text-[var(--charcoal)]">ข้อมูลร่างกายปัจจุบัน</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">
         ใช้เป็นฐานให้โค้ชดูแนวโน้ม ไม่ใช่การวินิจฉัยทางการแพทย์
       </p>
+
       <div className="mt-8 grid grid-cols-2 gap-4">
         <TextField
           label="ส่วนสูง (cm)"
@@ -352,9 +454,6 @@ function BodyStep({
         <p className="text-lg font-bold text-[var(--muted)]">BMI โดยประมาณ</p>
         <p className="mt-2 text-5xl font-black text-[var(--charcoal)]">{bmi ? bmi.toFixed(1) : "-"}</p>
         <div className="mt-5 h-4 overflow-hidden rounded-full bg-gradient-to-r from-[#46b9e8] via-[#7bd447] via-45% to-[#ef625a]" />
-        <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
-          ตัวเลขนี้ช่วยให้โค้ชเห็นภาพเริ่มต้นเท่านั้น แผนจริงจะดูพฤติกรรมและสุขภาพร่วมด้วย
-        </p>
       </div>
     </div>
   );
@@ -369,7 +468,7 @@ function GoalPlanStep({
 }) {
   return (
     <div>
-      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">เป้าหมายและไลฟ์สไตล์</h1>
+      <h1 className="onboarding-heading text-4xl text-[var(--charcoal)]">เป้าหมายและไลฟ์สไตล์</h1>
       <div className="mt-8 space-y-6">
         <TextField
           label="น้ำหนักเป้าหมาย (kg)"
@@ -411,7 +510,7 @@ function HealthContextStep({
 }) {
   return (
     <div>
-      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">มีเรื่องสุขภาพที่โค้ชควรรู้ไหม?</h1>
+      <h1 className="onboarding-heading text-4xl text-[var(--charcoal)]">มีเรื่องสุขภาพที่โค้ชควรรู้ไหม?</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">เลือกได้หลายข้อ หรือข้ามได้ถ้ายังไม่แน่ใจ</p>
       <ToggleGrid
         onToggle={(value) => onToggle("chronicConditions", value)}
@@ -433,7 +532,7 @@ function FoodContextStep({
 }) {
   return (
     <div>
-      <h1 className="text-4xl font-black leading-[1.1] tracking-[-0.025em] text-[var(--charcoal)]">อาหารที่ควรรู้ก่อนเริ่ม</h1>
+      <h1 className="onboarding-heading text-4xl text-[var(--charcoal)]">อาหารที่ควรรู้ก่อนเริ่ม</h1>
       <div className="mt-8 space-y-7">
         <ChoicePills
           label="สไตล์การกิน"
@@ -469,8 +568,22 @@ function FoodContextStep({
 function ReadyStep({ values }: { values: Record<FieldName, string> }) {
   return (
     <div className="flex flex-1 flex-col justify-center text-center">
-      <TrophyVisual />
-      <h1 className="text-5xl font-black leading-[1.05] tracking-[-0.03em] text-[var(--charcoal)]">แผนเริ่มต้นพร้อมแล้ว</h1>
+      {values.profilePhoto ? (
+        <div className="relative mx-auto mb-8 h-44 w-44">
+          <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_180deg,var(--beige-soft),#fff7d9,#f2eadf,var(--beige-soft))] opacity-80" />
+          <div className="absolute inset-2 overflow-hidden rounded-full ring-4 ring-white shadow-[0_20px_50px_rgba(70,56,36,0.14)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="รูปโปรไฟล์"
+              className="h-full w-full object-cover"
+              src={values.profilePhoto}
+            />
+          </div>
+        </div>
+      ) : (
+        <TrophyVisual />
+      )}
+      <h1 className="onboarding-heading text-5xl text-[var(--charcoal)]">แผนเริ่มต้นพร้อมแล้ว</h1>
       <p className="mt-5 text-lg leading-8 text-[var(--muted)]">
         โค้ชจะเห็นข้อมูลของ {values.nickname || "สมาชิก"} เพื่อช่วยเลือกแนวทางและติดตามการบ้านได้เหมาะขึ้น
       </p>
@@ -486,6 +599,7 @@ function ReadyStep({ values }: { values: Record<FieldName, string> }) {
     </div>
   );
 }
+
 
 function TextField({
   label,

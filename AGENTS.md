@@ -10,8 +10,12 @@ Allowed AI token usage only:
 - Analyze member-submitted meal homework photos.
 - Include all submitted meal photos for the day, even if there are more than 3 meals.
 - Evaluate the day's submitted meal photos together in one batch only.
-- Run only at 19:00 by default.
+- Run only at the configured daily review cutoff time, `21:00` by default.
 - The evaluation time may be adjusted later by the project owner depending on product strategy.
+- The product timezone is always Thailand time: `Asia/Bangkok`.
+- Member homework submitted after `21:00` must not be included in that day's batch.
+- If homework is submitted after the cutoff, the system must treat it according to the next valid product rule later; do not silently spend AI tokens on it for the closed day.
+- The next day starts at `00:00` Thailand time.
 - Run at most once per member per day.
 - Run only when the member submitted meal homework photos.
 - Run only for coach/admin review, not direct member-facing output.
@@ -28,9 +32,56 @@ If any requested feature, architecture, package, integration, or UX flow would r
 
 Cost control is a product requirement, not an optimization. Every design decision must assume AI token usage is forbidden unless it fits the allowed meal-photo evaluation rule above.
 
+## Highest Priority Rule - Scope Control / No Unrequested Work
+
+Codex must not add pages, features, workflows, navigation items, product concepts, backend structure, or extra UI sections unless the project owner explicitly asks for them or they are strictly required to complete the requested task.
+
+Required behavior:
+- Do exactly the requested task, in the smallest useful scope.
+- If a requested change reveals a product gap, explain the gap first and wait for approval before adding new product flow.
+- Do not invent new routes, dashboards, queues, chat flows, admin tools, AI flows, or message workflows.
+- Do not duplicate an existing workflow in a new page. If the same job already exists elsewhere, point that out before implementing.
+- Do not expand prototype scope to make the product feel more complete unless the project owner specifically asks for that expansion.
+- When unsure whether something is necessary, ask before implementing.
+
+This rule is a product discipline requirement. Extra work can make the prototype more confusing, so unnecessary additions are treated as defects, not helpful improvements.
+
+### Highest Priority Rule - Meal Photo Size Control
+
+This is also a cost-control requirement and must be treated as a highest-priority implementation rule.
+
+All member-submitted meal homework photos must be resized and compressed before storage, coach review display, or AI meal-photo evaluation.
+
+Required defaults:
+- Resize meal homework photos on the client or server before upload/storage whenever possible.
+- Limit the longest image side to `1280px` by default.
+- Prefer `image/webp` output at `0.8` quality.
+- Fall back to JPEG only when WebP is not supported.
+- Avoid keeping oversized original images unless the project owner explicitly requests original retention.
+- Reject or recompress images that remain larger than the configured production file-size limit.
+- Do not use higher-resolution images for AI unless the coach/admin review workflow explicitly needs it.
+
+This rule exists to control AI token cost, storage cost, bandwidth, and coach review speed.
+
+### Daily Review Time Policy
+
+Healthy Journey must treat the daily review time as configurable product strategy.
+
+Required defaults:
+- Timezone: `Asia/Bangkok`
+- Default daily review cutoff: `21:00`
+- Daily reset time: `00:00`
+- Meal photo AI evaluation and rule-based water summary should both use the configured daily review cutoff unless the project owner later separates them.
+- Do not hardcode `21:00` deep inside feature code.
+- Keep all date grouping, daily limits, and batch timing based on Thailand time.
+- Do not include member homework submitted after `21:00` in the closed day's food AI evaluation or water summary.
+- The project owner may later adjust the cutoff after observing member dinner time, bedtime, and homework submission behavior.
+
+Water tracking must be summarized with deterministic calculations only. Do not use AI tokens for water tracking summaries, charts, reminders, or recommendations.
+
 ### Meal Photo Evaluation Model Policy
 
-Use `gpt-5.4` as the primary model for the 19:00 meal-photo evaluation batch.
+Use `gpt-5.4` as the primary model for the configured daily meal-photo evaluation batch.
 
 Use image `detail: high` only when photos are small, unclear, or food details are difficult to see. Do not default every image to higher-cost detail if normal detail is enough.
 
@@ -81,16 +132,18 @@ If a signed-in member opens the app again and still has an active session, they 
 
 ## Current Build Mode
 
-We are building a **3-day presentable frontend prototype**.
+We are now moving from prototype-only work into a **production MVP build**.
 
-This is not production yet.
+Current production priority:
+- Build real in-app coach-to-member messaging inside Healthy Journey.
+- Coaches must send only preset/template/rule-based messages that they manually review.
+- Members should be able to see sent messages inside the Healthy Journey member experience.
+- Member-facing graph/share cards may be sent through the in-app message system when they are deterministic UI/data output.
 
-Main goal:
-- Make the product look premium, modern, friendly, and believable.
-- Use mock data only.
-- Build a clean frontend foundation that can later become production.
-
-Do not build full backend systems during prototype work.
+Still required:
+- Keep AI token usage restricted to meal-photo evaluation only.
+- Do not use AI to generate, rewrite, draft, regenerate, or suggest member-facing messages.
+- Keep scope narrow and implement one production slice at a time.
 
 ---
 
@@ -208,23 +261,21 @@ The mock layer should be easy to replace with Supabase later.
 
 ## Hard Do-Not-Build Rules
 
-During prototype work, do not add:
+Do not add broad production systems unless explicitly requested.
 
-- Supabase
-- database schema
-- RLS
-- authentication
+The project owner has explicitly approved building real in-app coach-to-member messaging. For that production slice only, backend, database, auth integration, and member message UI are allowed.
+
+Outside the approved messaging slice, do not add:
+
 - payment
 - Stripe
 - leanos integration
 - real AI API calls
 - upload functionality
 - realtime chat
-- notification system
-- production permission logic
 - broad backend architecture
 
-AI insight should be mock data only.
+AI insight should remain mock or deterministic unless it is meal-photo evaluation under the AI token policy.
 
 ---
 

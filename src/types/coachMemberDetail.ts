@@ -84,6 +84,17 @@ export type FollowUpNote = {
   tags: readonly string[];
 };
 
+export type CoachReviewContext = {
+  title: string;
+  description: string;
+  highlights: readonly {
+    label: string;
+    value: string;
+    note: string;
+  }[];
+  cues: readonly string[];
+};
+
 export type MemberDetailPageData = {
   member: {
     name: string;
@@ -103,4 +114,5 @@ export type MemberDetailPageData = {
   homework: HomeworkActive | HomeworkMissed;
   template: TemplateMessage;
   followUp?: FollowUpNote;
+  coachReviewContext?: CoachReviewContext;
 };

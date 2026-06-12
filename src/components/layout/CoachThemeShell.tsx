@@ -21,7 +21,6 @@ type CoachBottomNavProps = {
 const coachNavItems = [
   { label: "สมาชิก", href: "/coach" },
   { label: "อินไซต์", href: "/coach/insights" },
-  { label: "แชท", href: "/coach-chat" },
   { label: "ติดตาม", href: "/coach/follow-up" },
   { label: "ตั้งค่า", href: "/coach/settings" },
 ] as const;
@@ -92,7 +91,7 @@ export function CoachPageHeader({
 
 export function CoachBottomNav({ activeHref }: CoachBottomNavProps) {
   return (
-    <nav className={`${coachTheme.displayFont} grid grid-cols-5 gap-1 rounded-[22px] border border-[#3A3A3C] bg-[#2C2C2E] p-1.5`}>
+    <nav className={`${coachTheme.displayFont} grid grid-cols-4 gap-1 rounded-[22px] border border-[#3A3A3C] bg-[#2C2C2E] p-1.5`}>
       {coachNavItems.map((item) => {
         const isActive = item.href === activeHref;
 

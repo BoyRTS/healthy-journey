@@ -1,8 +1,8 @@
 export const coachOrganization = {
   owner: {
     name: "Coach Nan",
-    role: "หัวหน้าโค้ช",
-    teamName: "Healthy Journey Team A",
+    role: "โค้ช",
+    teamName: "My Healthy Journey Team",
   },
   stats: [
     { label: "โค้ช", value: "4" },

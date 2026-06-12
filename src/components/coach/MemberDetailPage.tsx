@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CoachMessageActions } from "@/components/coach/CoachMessageActions";
 import type {
   FollowUpNote,
   HomeworkActive,
@@ -9,7 +10,9 @@ import type {
   SummaryMissed,
   TemplateMessage,
   WeekDay,
+  CoachReviewContext,
 } from "@/types/coachMemberDetail";
+import type { MessageGraphSnapshot } from "@/types/messages";
 import type { ReactNode } from "react";
 
 const pageClassName = "min-h-screen bg-[#1C1C1E] text-white";
@@ -26,9 +29,16 @@ const actionPrimaryClassName =
 const actionSecondaryClassName =
   "w-full rounded-[14px] border border-[#343434] bg-[#2B2B2E] px-4 py-4 text-[13px] font-semibold text-white shadow-none transition-all duration-200 hover:border-[#4A4A4A] hover:bg-[#303033]";
 
-export function MemberDetailPage({ data }: { data: MemberDetailPageData }) {
+export function MemberDetailPage({
+  data,
+  memberSlug,
+}: {
+  data: MemberDetailPageData;
+  memberSlug?: string;
+}) {
   const state = data.summary.kind;
   const plan = data.plan[state];
+  const resolvedMemberSlug = memberSlug ?? data.member.name.toLowerCase();
 
   return (
     <main className={pageClassName}>
@@ -38,11 +48,62 @@ export function MemberDetailPage({ data }: { data: MemberDetailPageData }) {
           <TodayHealthSummary summary={data.summary} />
           <CoachTodayPlan plan={plan} />
           <HomeworkAndConsistency homework={data.homework} />
-          <TemplateMessageSection template={data.template} />
+          <TemplateMessageSection
+            graphSnapshot={createGraphSnapshot(data)}
+            memberName={data.member.name}
+            memberSlug={resolvedMemberSlug}
+            template={data.template}
+          />
           {data.followUp ? <FollowUpAlert note={data.followUp} /> : null}
+          {data.coachReviewContext ? (
+            <CoachReviewContextSection context={data.coachReviewContext} />
+          ) : null}
         </div>
       </div>
     </main>
+  );
+}
+
+function CoachReviewContextSection({
+  context,
+}: {
+  context: CoachReviewContext;
+}) {
+  return (
+    <section className={sectionCardClassName}>
+      <h2 className="mb-2 text-[20px] font-medium leading-tight text-[#F6F3EA]">
+        {context.title}
+      </h2>
+      <p className="mb-5 text-[13px] leading-6 text-[#B8B2A7]">
+        {context.description}
+      </p>
+
+      <div className="grid grid-cols-3 gap-2.5">
+        {context.highlights.map((item) => (
+          <div key={item.label} className={innerCardClassName + " p-3"}>
+            <p className="text-[11px] leading-4 text-[#B8B2A7]">{item.label}</p>
+            <p className="mt-2 text-[19px] font-semibold leading-none text-[#F6F3EA]">
+              {item.value}
+            </p>
+            <p className="mt-2 text-[10px] leading-4 text-[#8E8E93]">{item.note}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 rounded-[16px] border border-[#343434] bg-[#2B2B2E] p-4">
+        <p className="mb-3 text-[12px] font-medium text-[#64FFDA]">
+          Rule-based cues
+        </p>
+        <ul className="space-y-2.5">
+          {context.cues.map((cue) => (
+            <li key={cue} className="flex gap-2 text-[13px] leading-6 text-[#F6F3EA]">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#64FFDA]" />
+              <span>{cue}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
 
@@ -318,8 +379,12 @@ function CoachTodayPlan({ plan }: { plan: PlanState }) {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <PrimaryActionButton>{plan.primaryAction}</PrimaryActionButton>
-          <SecondaryActionButton>{plan.secondaryAction}</SecondaryActionButton>
+          <PrimaryActionLink href="#template-message">
+            ไปที่ข้อความที่จะส่ง
+          </PrimaryActionLink>
+          <SecondaryActionLink href="#homework-summary">
+            ดูการบ้านก่อน
+          </SecondaryActionLink>
         </div>
 
         <div className="mt-5 space-y-3">
@@ -390,7 +455,7 @@ function HomeworkAndConsistency({
   homework: HomeworkActive | HomeworkMissed;
 }) {
   return (
-    <section className={sectionCardClassName}>
+    <section className={sectionCardClassName} id="homework-summary">
       <h2 className="mb-5 text-[20px] font-medium leading-tight text-[#F6F3EA]">
         {homework.title}
       </h2>
@@ -499,37 +564,73 @@ function ConsistencyRow({ weekDays }: { weekDays: readonly WeekDay[] }) {
   );
 }
 
-function TemplateMessageSection({ template }: { template: TemplateMessage }) {
+function TemplateMessageSection({
+  graphSnapshot,
+  memberName,
+  memberSlug,
+  template,
+}: {
+  graphSnapshot: MessageGraphSnapshot | null;
+  memberName: string;
+  memberSlug: string;
+  template: TemplateMessage;
+}) {
   return (
-    <section className={sectionCardClassName}>
+    <section className={sectionCardClassName} id="template-message">
       <h2 className="mb-2 text-[20px] font-medium leading-tight text-[#F6F3EA]">
         {template.title}
       </h2>
       <p className="mb-4 text-xs text-[#B8B2A7]">{template.description}</p>
 
-      <div className="relative mb-5 rounded-[16px] border border-[#343434] bg-[#2B2B2E] p-6 shadow-none">
-        <div className="absolute right-3 top-3 flex items-center gap-1.5 rounded-lg border border-[#B388FF] bg-[#332B3F] px-2.5 py-1">
+      <div className="mb-3 flex items-center justify-end">
+        <div className="flex items-center gap-1.5 rounded-lg border border-[#B388FF] bg-[#332B3F] px-2.5 py-1">
           <span className="h-1.5 w-1.5 rounded-full bg-[#B388FF]" />
           <span className="text-[10px] tracking-wide text-white">Template</span>
         </div>
-
-        <div className="pr-20">
-          <p className="whitespace-pre-line text-[13px] leading-[1.7] text-[#F6F3EA]">
-            {template.message}
-          </p>
-        </div>
       </div>
 
-      <div className="space-y-2.5">
-        <PrimaryActionButton>{template.primaryAction}</PrimaryActionButton>
-        <div className="grid grid-cols-2 gap-2.5">
-          {template.secondaryActions.map((action) => (
-            <SecondaryActionButton key={action}>{action}</SecondaryActionButton>
-          ))}
-        </div>
-      </div>
+      <CoachMessageActions
+        graphSnapshot={graphSnapshot}
+        memberName={memberName}
+        memberSlug={memberSlug}
+        message={template.message}
+        primaryAction={template.primaryAction}
+        secondaryActions={template.secondaryActions}
+      />
     </section>
   );
+}
+
+function createGraphSnapshot(data: MemberDetailPageData): MessageGraphSnapshot {
+  if (data.summary.kind === "active") {
+    return {
+      kind: "active",
+      title: "สรุปสุขภาพวันนี้",
+      primaryMetric: `${data.summary.energyKcal} kcal`,
+      secondaryMetric: `เป้าหมาย ${data.summary.energyTarget.min}-${data.summary.energyTarget.max} kcal`,
+      note: data.summary.statusLabel,
+      tags: data.summary.macroCharts.map((chart) => `${chart.label} ${chart.value}%`),
+      chartItems: data.summary.macroCharts.map((chart) => ({
+        label: chart.label,
+        value: chart.value,
+        color: chart.color,
+      })),
+    };
+  }
+
+  return {
+    kind: "missed",
+    title: data.summary.emptyTitle,
+    primaryMetric: "ยังไม่มีข้อมูลล่าสุด",
+    secondaryMetric: data.summary.emptyDescription,
+    note: "เริ่มใหม่จากมื้อเดียวก็พอ",
+    tags: [...data.summary.tags],
+    chartItems: [
+      { label: "Consistency", value: 20, color: "#DCA85F" },
+      { label: "Latest homework", value: 0, color: "#C66B5C" },
+      { label: "Restart", value: 35, color: "#6F8F6A" },
+    ],
+  };
 }
 
 function FollowUpAlert({ note }: { note: FollowUpNote }) {
@@ -562,22 +663,34 @@ function FollowUpAlert({ note }: { note: FollowUpNote }) {
   );
 }
 
-function PrimaryActionButton({ children }: { children: ReactNode }) {
+function PrimaryActionLink({
+  children,
+  href,
+}: {
+  children: ReactNode;
+  href: string;
+}) {
   return (
-    <button className={actionPrimaryClassName} type="button">
+    <a className={actionPrimaryClassName} href={href}>
       <span className="flex items-center justify-center gap-2">
         {children}
         <ArrowIcon />
       </span>
-    </button>
+    </a>
   );
 }
 
-function SecondaryActionButton({ children }: { children: ReactNode }) {
+function SecondaryActionLink({
+  children,
+  href,
+}: {
+  children: ReactNode;
+  href: string;
+}) {
   return (
-    <button className={actionSecondaryClassName} type="button">
+    <a className={actionSecondaryClassName} href={href}>
       {children}
-    </button>
+    </a>
   );
 }
 

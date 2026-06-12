@@ -34,7 +34,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: วันนี้ 09:15",
     behaviorTag: "เริ่มต้นใหม่",
     avatarVariant: 2,
-    href: "/coach/members/prae",
+    href: "/coach/members/fon",
     tone: "new",
   },
   {
@@ -46,7 +46,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: เมื่อวาน 18:30",
     behaviorTag: "โปรตีนแกว่ง",
     avatarVariant: 3,
-    href: "/coach/members/may",
+    href: "/coach/members/ann",
     tone: "watch",
   },
   {
@@ -58,7 +58,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: วันนี้ 07:55",
     behaviorTag: "ส่งครบ",
     avatarVariant: 4,
-    href: "/coach/members/prae",
+    href: "/coach/members/beam",
     tone: "strong",
   },
   {
@@ -70,7 +70,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: 3 วันก่อน",
     behaviorTag: "ต้องเช็กอิน",
     avatarVariant: 5,
-    href: "/coach/members/may",
+    href: "/coach/members/nut",
     tone: "follow_up",
   },
   {
@@ -82,7 +82,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: วันนี้ 11:20",
     behaviorTag: "กำลังดี",
     avatarVariant: 6,
-    href: "/coach/members/prae",
+    href: "/coach/members/lin",
     tone: "steady",
   },
   {
@@ -94,7 +94,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: 1 วันก่อน",
     behaviorTag: "เริ่มสะดุด",
     avatarVariant: 7,
-    href: "/coach/members/may",
+    href: "/coach/members/ton",
     tone: "watch",
   },
   {
@@ -106,7 +106,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: วันนี้ 08:05",
     behaviorTag: "กลับมาแล้ว",
     avatarVariant: 8,
-    href: "/coach/members/prae",
+    href: "/coach/members/kwang",
     tone: "strong",
   },
   {
@@ -118,7 +118,7 @@ export const demoMembers = [
     lastUpdate: "ล่าสุด: เมื่อเช้า",
     behaviorTag: "บาลานซ์ดี",
     avatarVariant: 9,
-    href: "/coach/members/prae",
+    href: "/coach/members/fa",
     tone: "steady",
   },
 ] satisfies CoachMember[];

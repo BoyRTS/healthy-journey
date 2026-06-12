@@ -1,7 +1,8 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { MemberPageShell } from "@/components/layout/MemberPageShell";
 import { dashboardCover } from "@/data/imageAssets";
+import { getHealthyJourneyCurrentUser, type MemberHealthProfile } from "@/lib/auth/server";
 
 const DEBUG_HOTSPOTS = false;
 const IMAGE_WIDTH = 941;
@@ -77,7 +78,11 @@ function toPercent(value: number, total: number) {
   return `${(value / total) * 100}%`;
 }
 
-export default function MemberPage() {
+export default async function MemberPage() {
+  const user = await getHealthyJourneyCurrentUser();
+  const profile = user?.privateMetadata?.memberHealthProfile as Partial<MemberHealthProfile> | undefined;
+  const nickname = profile?.nickname?.trim() || "";
+
   return (
     <MemberPageShell
       action={
@@ -92,7 +97,7 @@ export default function MemberPage() {
       backLabel="ผลลัพธ์ของฉัน"
       subtitle={"ที่นี่คุณไม่ต้องดูแลตัวเองเพียงลำพัง เราจะค่อยๆ เดินไปด้วยกัน\nทีละมื้อ ทีละวัน พร้อมคำแนะนำ การติดตาม และแรงสนับสนุน\nเพื่อช่วยให้คุณก้าวไปสู่เป้าหมายได้\u00A0อย่างมั่นคง"}
       subtitleClassName="text-[0.9rem] sm:text-base"
-      title="ยินดีต้อนรับสู่ Healthy Journey"
+      title={nickname ? `ยินดีต้อนรับค่ะ คุณ${nickname}` : "ยินดีต้อนรับสู่ Healthy Journey ค่ะ"}
       titleClassName="text-[1.26rem] leading-[0.94] sm:text-[1.575rem]"
     >
       <div className="flex h-full min-h-[calc(100vh-7.5rem)] justify-center bg-[var(--cream)] lg:items-start lg:p-6">
