@@ -273,7 +273,7 @@ function BasicsStep({
 }) {
   return (
     <div>
-      <h1 className="display-serif text-4xl font-black leading-tight text-[var(--charcoal)]">ขอรู้จักคุณอีกนิด</h1>
+      <h1 className="display-serif text-2xl font-black leading-tight text-[var(--charcoal)]">ขอรู้จักคุณอีกนิด</h1>
       <p className="mt-3 text-lg leading-8 text-[var(--muted)]">
         ข้อมูลนี้ใช้ให้โค้ชเรียกชื่อและติดต่อสมาชิกได้สะดวกขึ้น
       </p>
@@ -301,7 +301,7 @@ function BasicsStep({
           value={values.gender}
         />
         <TextField
-          label="ปีเกิด"
+          label="อายุ"
           name="birthYear"
           onChange={(value) => onChange("birthYear", value)}
           type="number"
