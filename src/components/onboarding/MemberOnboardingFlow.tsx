@@ -134,7 +134,7 @@ export function MemberOnboardingFlow({ action }: MemberOnboardingFlowProps) {
               eyebrow="เริ่มจากเป้าหมายหลัก"
               onChange={(value) => updateValue("goal", value)}
               options={goals}
-              title="ตอนนี้คุณอยากให้ Healthy Journey ช่วยเรื่องไหนที่สุด?"
+              title="อะไรคือเป้าหมายด้านสุขภาพของคุณ ตอนนี้?"
               value={values.goal}
             />
           ) : null}
@@ -225,7 +225,7 @@ function ChoiceStep({
   return (
     <div>
       {eyebrow ? <p className="mb-3 text-sm font-black text-[var(--olive)]">{eyebrow}</p> : null}
-      <h1 className="display-serif text-4xl font-black leading-tight text-[var(--charcoal)]">{title}</h1>
+      <h1 className="display-serif text-2xl font-black leading-tight text-[var(--charcoal)]">{title}</h1>
       <div className="mt-8 space-y-4">
         {options.map((option) => {
           const selected = option === value;
