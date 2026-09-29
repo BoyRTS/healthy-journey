@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CARE · โค้ชฝึกหัดของฉัน (ฝั่งโค้ช)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --care-plan-aqua-edge: #018899;
+  --care-plan-aqua: #01A6BA;
+  --care-ocean-blue-edge: #2E5D92;
+  --care-deep-navy-edge: #193056;
+  --care-deep-navy: #1E3B69;
+  --care-ocean-blue: #3871B2;
+  --care-aqua-edge: #5FACB0;
+  --care-soft-aqua: #74D2D7;
+  --care-mint-edge: #7DB2A9;
+  --care-coach-green-edge: #82AE86;
+  --care-soft-violet: #8968B8;
+  --care-nutrition-periwinkle-edge: #8B94BA;
+  --care-glacier-edge: #8BA6BD;
+  --care-sage-aqua: #8CBFB5;
+  --care-baby-blue: #8FC4E7;
+  --care-sage-edge: #96B7AB;
+  --care-taupe-edge: #98806D;
+  --care-seafoam: #98D9CE;
+  --care-coach-green: #9FD4A3;
+  --care-violet-edge: #A49AB9;
+  --care-nutrition-periwinkle: #A9B5E3;
+  --care-powder-blue: #A9CBE7;
+  --care-protein-lilac: #B19CD8;
+  --care-mint-breeze: #B7DFD0;
+  --care-lavender: #B8A4D7;
+  --care-goal-pink-edge: #BB8396;
+  --care-frost-edge: #BCC5CA;
+  --care-pink-edge: #BE9AA2;
+  --care-pale-glacier: #BFD8E8;
+  --care-warm-edge: #C69F87;
+  --care-cool-mist: #C6D7E2;
+  --care-misty-lilac: #C8BCE2;
+  --care-dusty-rose: #D7A9B8;
+  --care-goal-pink: #E4A0B7;
+  --care-frost-blue: #E5F0F6;
+  --care-blush-pink: #E8BCC6;
+  --care-soft-apricot: #EDB679;
+  --care-peach-cream: #F1C2A5;
+  --care-cloud-white: #F7F8F6;
+  --care-sky-mist: #D4E2EC;
+}
+
+/* ---------- พื้นฐาน ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: "Noto Sans Thai", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--care-deep-navy);
+  background: var(--care-frost-blue);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+small { font-size: 12px; }
+.coach-brand { font-family: "Playfair Display", serif; font-weight: 700; letter-spacing: .04em; }
+
+/* ---------- แถบคั่นสำหรับดูงาน (ไม่ใช่ส่วนของแอป) ---------- */
+.demo-divider {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  background: var(--care-deep-navy);
+  color: var(--care-cloud-white);
+  font-size: 12px; font-weight: 600; letter-spacing: .02em;
+}
+.demo-divider::before, .demo-divider::after { content: ""; flex: 1; height: 1px; background: var(--care-glacier-edge); }
+.demo-note {
+  max-width: 640px; margin: 0 auto; padding: 10px 16px 0;
+  font-size: 12px; color: var(--care-ocean-blue-edge);
+}
+
+/* ---------- โครงหน้า ---------- */
+.coach-shell { background: var(--care-frost-blue); padding-bottom: 8px; }
+.coach-shell-inner {
+  max-width: 640px; margin: 0 auto;
+  padding: 18px 16px 28px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.coach-back-link {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 26px; font-weight: 700; line-height: 1;
+  color: var(--care-deep-navy);
+  background: var(--care-cloud-white);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 5px 2px var(--care-cool-mist),
+    0 11px 14px var(--care-cool-mist);
+}
+.coach-back-link:active { transform: translateY(2px); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-cool-mist), 0 3px 1px var(--care-cool-mist), 0 6px 8px var(--care-cool-mist); }
+
+.coach-page-head { display: flex; align-items: flex-start; gap: 14px; }
+.coach-page-head-icon {
+  flex: 0 0 52px; width: 52px; height: 52px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--care-soft-aqua); color: var(--care-deep-navy);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-aqua-edge),
+    0 5px 2px var(--care-aqua-edge),
+    0 11px 14px var(--care-cool-mist);
+}
+.coach-page-head h1 { font-size: 26px; font-weight: 700; line-height: 1.25; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.coach-page-head p { margin-top: 4px; color: var(--care-ocean-blue-edge); font-weight: 500; }
+.coach-count-badge {
+  display: inline-block; padding: 2px 12px; border-radius: 999px;
+  font-size: 14px; font-weight: 600;
+  background: var(--care-soft-aqua); color: var(--care-deep-navy);
+  box-shadow: 0 2px 0 var(--care-aqua-edge);
+}
+
+/* ---------- การ์ดดินน้ำมัน ---------- */
+.coach-card {
+  border-radius: 22px;
+  padding: 20px;
+  background: var(--care-cloud-white);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 5px 2px var(--care-cool-mist),
+    0 11px 14px var(--care-cool-mist);
+}
+.coach-card-lead { color: var(--care-ocean-blue-edge); font-size: 13px; line-height: 1.55; }
+.coach-subcard {
+  border-radius: 18px; padding: 16px;
+  background: var(--care-frost-blue);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 4px 1px var(--care-cool-mist),
+    0 8px 10px var(--care-cool-mist);
+}
+.coach-subcard-title { display: block; font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+.coach-section-label {
+  font-size: 13px; font-weight: 700; letter-spacing: .02em;
+  color: var(--care-ocean-blue-edge);
+  display: flex; align-items: center; gap: 8px;
+}
+.coach-section-label::after { content: ""; flex: 1; height: 1px; background: var(--care-cool-mist); }
+
+/* ชิป / ป้าย */
+.coach-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.coach-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; line-height: 1.4; white-space: nowrap;
+  background: var(--care-sky-mist); color: var(--care-deep-navy);
+  box-shadow: 0 2px 0 var(--care-glacier-edge);
+}
+.coach-chip.is-ok    { background: var(--care-seafoam);     box-shadow: 0 2px 0 var(--care-mint-edge); }
+.coach-chip.is-full  { background: var(--care-peach-cream); box-shadow: 0 2px 0 var(--care-warm-edge); }
+.coach-chip.is-empty { background: var(--care-cool-mist);   box-shadow: 0 2px 0 var(--care-frost-edge); color: var(--care-ocean-blue-edge); }
+.coach-chip.is-warn  { background: var(--care-soft-apricot); box-shadow: 0 2px 0 var(--care-warm-edge); }
+.coach-chip.is-danger{ background: var(--care-goal-pink);   box-shadow: 0 2px 0 var(--care-goal-pink-edge); }
+
+.coach-care-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 4px 12px 4px 10px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; white-space: nowrap;
+}
+.coach-care-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; }
+.coach-care-pill.is-active  { background: var(--care-mint-breeze); box-shadow: 0 2px 0 var(--care-mint-edge); }
+.coach-care-pill.is-active::before  { background: var(--care-coach-green-edge); }
+.coach-care-pill.is-expired { background: var(--care-blush-pink); box-shadow: 0 2px 0 var(--care-pink-edge); }
+.coach-care-pill.is-expired::before { background: var(--care-goal-pink-edge); }
+
+/* ตัวเลขสถิติ */
+.coach-metric {
+  border-radius: 16px; padding: 12px 10px;
+  background: var(--care-frost-blue);
+  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 3px 1px var(--care-cool-mist),
+    0 6px 8px var(--care-cool-mist);
+}
+.coach-metric-label { font-size: 12px; font-weight: 600; color: var(--care-ocean-blue-edge); line-height: 1.3; }
+.coach-metric-value { font-size: 24px; font-weight: 700; line-height: 1.15; }
+.coach-metric-value small { font-size: 13px; font-weight: 600; color: var(--care-ocean-blue-edge); margin-left: 2px; }
+.coach-metric.is-full .coach-metric-value { color: var(--care-taupe-edge); }
+.coach-metric.is-zero .coach-metric-value { color: var(--care-glacier-edge); }
+
+/* ปุ่ม */
+.coach-primary-button,
+.coach-trainee-secondary,
+.coach-trainee-danger-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 10px 18px; border: 0; border-radius: 16px;
+  font-weight: 700; font-size: 15px; text-decoration: none; white-space: nowrap;
+}
+.coach-primary-button {
+  background: var(--care-soft-aqua); color: var(--care-deep-navy);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-aqua-edge),
+    0 5px 2px var(--care-aqua-edge),
+    0 11px 14px var(--care-cool-mist);
+}
+.coach-trainee-secondary {
+  background: var(--care-cloud-white); color: var(--care-deep-navy);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 5px 2px var(--care-cool-mist),
+    0 11px 14px var(--care-cool-mist);
+}
+.coach-trainee-danger-button {
+  background: var(--care-goal-pink); color: var(--care-deep-navy-edge);
+  box-shadow:
+    inset 2px 3px 4px var(--care-blush-pink),
+    inset -2px -4px 6px var(--care-goal-pink-edge),
+    0 5px 2px var(--care-goal-pink-edge),
+    0 11px 14px var(--care-cool-mist);
+}
+.coach-primary-button:active, .coach-trainee-secondary:active, .coach-trainee-danger-button:active { transform: translateY(2px); }
+.is-block { width: 100%; }
+
+/* ลิงก์ในการ์ด */
+.coach-trainee-link {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 48px;
+  font-weight: 700; color: var(--care-ocean-blue); text-decoration: none;
+}
+.coach-trainee-link:hover { text-decoration: underline; }
+
+/* กล่องแจ้งเตือน */
+.coach-notice {
+  border-radius: 18px; padding: 14px 16px 14px 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--care-sky-mist);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 4px 1px var(--care-glacier-edge),
+    0 8px 10px var(--care-cool-mist);
+}
+.coach-notice-icon {
+  flex: 0 0 34px; width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 18px;
+  background: var(--care-cloud-white); color: var(--care-deep-navy);
+  box-shadow: 0 2px 0 var(--care-cool-mist);
+}
+.coach-notice-title { font-weight: 700; font-size: 15px; line-height: 1.4; }
+.coach-notice-body  { font-size: 13.5px; color: var(--care-deep-navy); margin-top: 2px; line-height: 1.5; }
+.coach-notice.is-error { background: var(--care-blush-pink); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-dusty-rose), 0 4px 1px var(--care-pink-edge), 0 8px 10px var(--care-cool-mist); }
+.coach-notice.is-error .coach-notice-icon { color: var(--care-goal-pink-edge); }
+.coach-notice.is-warn  { background: var(--care-peach-cream); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-soft-apricot), 0 4px 1px var(--care-warm-edge), 0 8px 10px var(--care-cool-mist); }
+.coach-notice.is-warn .coach-notice-icon { color: var(--care-taupe-edge); }
+.coach-notice.is-info  { background: var(--care-pale-glacier); }
+
+/* อวาตาร์วงกลมสี */
+.coach-member-avatar {
+  flex: 0 0 52px; width: 52px; height: 52px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; color: var(--care-cloud-white);
+  background: var(--care-plan-aqua);
+  box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-soft-aqua), 0 6px 10px var(--care-cool-mist);
+}
+.coach-member-avatar.av-violet { background: var(--care-soft-violet);     box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-lavender), 0 6px 10px var(--care-cool-mist); }
+.coach-member-avatar.av-warm   { background: var(--care-warm-edge);       box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-peach-cream), 0 6px 10px var(--care-cool-mist); }
+.coach-member-avatar.av-ocean  { background: var(--care-ocean-blue);      box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-powder-blue), 0 6px 10px var(--care-cool-mist); }
+.coach-member-avatar.av-mint   { background: var(--care-mint-edge);       box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-mint-breeze), 0 6px 10px var(--care-cool-mist); }
+.coach-member-avatar.av-rose   { background: var(--care-goal-pink-edge);  box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-blush-pink), 0 6px 10px var(--care-cool-mist); }
+.coach-member-avatar.av-muted  { background: var(--care-glacier-edge);    box-shadow: 0 0 0 3px var(--care-cloud-white), 0 0 0 5px var(--care-cool-mist), 0 6px 10px var(--care-cool-mist); }
+.coach-member-name { font-size: 19px; font-weight: 700; line-height: 1.3; }
+
+/* ---------- การ์ดโควตาของฉัน ---------- */
+.coach-trainee-quota-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+.coach-trainee-quota-used { display: flex; flex-direction: column; }
+.coach-trainee-quota-used .lbl { font-size: 13px; font-weight: 600; color: var(--care-ocean-blue-edge); }
+.coach-trainee-quota-used .num { font-size: 40px; font-weight: 700; line-height: 1; }
+.coach-trainee-quota-used .num small { font-size: 16px; font-weight: 600; color: var(--care-ocean-blue-edge); margin-left: 6px; }
+.coach-trainee-quota-left {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+  padding: 10px 14px; border-radius: 16px;
+  background: var(--care-frost-blue);
+  box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-cool-mist), 0 3px 1px var(--care-cool-mist), 0 6px 8px var(--care-cool-mist);
+}
+.coach-trainee-quota-left .num { font-size: 22px; font-weight: 700; line-height: 1.1; }
+.coach-trainee-quota-left.is-low { background: var(--care-peach-cream); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-soft-apricot), 0 3px 1px var(--care-warm-edge), 0 6px 8px var(--care-cool-mist); }
+.coach-trainee-quota-left.is-low .num { color: var(--care-taupe-edge); }
+.coach-trainee-quota-left.is-ok  { background: var(--care-mint-breeze); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-seafoam), 0 3px 1px var(--care-mint-edge), 0 6px 8px var(--care-cool-mist); }
+
+.coach-trainee-bar {
+  display: flex; height: 16px; border-radius: 999px; overflow: hidden; margin-top: 16px;
+  background: var(--care-cool-mist);
+  box-shadow: inset 0 2px 3px var(--care-glacier-edge);
+}
+.coach-trainee-bar > span { display: block; height: 100%; }
+.coach-trainee-bar .seg-own    { background: var(--care-plan-aqua); }
+.coach-trainee-bar .seg-shared { background: var(--care-protein-lilac); }
+.coach-trainee-bar.is-low .seg-free-hint { background: var(--care-soft-apricot); }
+.coach-trainee-legend { display: grid; gap: 8px; margin-top: 14px; }
+.coach-trainee-legend li { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.coach-trainee-legend li b { margin-left: auto; font-weight: 700; font-size: 16px; white-space: nowrap; }
+.coach-trainee-legend .dot { width: 14px; height: 14px; border-radius: 5px; flex: 0 0 14px; }
+.coach-trainee-legend .dot.own    { background: var(--care-plan-aqua); }
+.coach-trainee-legend .dot.shared { background: var(--care-protein-lilac); }
+.coach-trainee-legend .dot.free   { background: var(--care-soft-apricot); }
+.coach-trainee-legend .dot.free-ok{ background: var(--care-cool-mist); box-shadow: inset 0 0 0 2px var(--care-glacier-edge); }
+.coach-trainee-quota .coach-card-lead { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--care-cool-mist); }
+
+/* ---------- การ์ดโค้ชฝึกหัด ---------- */
+.coach-trainee-card { display: flex; flex-direction: column; gap: 14px; }
+.coach-trainee-card-head { display: flex; align-items: center; gap: 14px; }
+.coach-trainee-card-head .who { flex: 1; min-width: 0; }
+.coach-trainee-card-head .who p { font-size: 12.5px; color: var(--care-ocean-blue-edge); font-weight: 500; margin-top: 2px; }
+.coach-trainee-card-head .coach-chip { flex: 0 0 auto; }
+.coach-trainee-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.coach-trainee-quota-edit .coach-subcard-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.coach-trainee-quota-edit .coach-subcard-title span { font-size: 12px; font-weight: 600; color: var(--care-ocean-blue-edge); }
+.coach-trainee-input-row { display: flex; align-items: stretch; gap: 10px; }
+.coach-trainee-input-wrap {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px;
+  padding: 0 14px; border-radius: 14px; min-height: 52px;
+  background: var(--care-cloud-white);
+  border: 2px solid var(--care-pale-glacier);
+  box-shadow: inset 2px 3px 5px var(--care-cool-mist), inset -2px -2px 4px var(--care-cloud-white);
+}
+.coach-trainee-input-wrap:focus-within { border-color: var(--care-plan-aqua); box-shadow: inset 2px 3px 5px var(--care-cool-mist), inset -2px -2px 4px var(--care-cloud-white), 0 0 0 4px var(--care-frost-blue); }
+.coach-trainee-input {
+  flex: 1; min-width: 0; width: 100%; border: 0; background: none; outline: none;
+  font-size: 24px; font-weight: 700; color: var(--care-deep-navy); padding: 6px 0;
+}
+.coach-trainee-input-unit { font-weight: 600; color: var(--care-ocean-blue-edge); font-size: 14px; white-space: nowrap; }
+.coach-trainee-save { flex: 0 0 auto; min-width: 96px; }
+.coach-trainee-hint { margin-top: 10px; font-size: 12.5px; color: var(--care-ocean-blue-edge); line-height: 1.5; }
+.coach-trainee-hint b { color: var(--care-deep-navy); font-weight: 700; }
+.coach-trainee-quota-edit.is-error .coach-trainee-input-wrap { border-color: var(--care-goal-pink-edge); background: var(--care-cloud-white); box-shadow: inset 2px 3px 5px var(--care-blush-pink), inset -2px -2px 4px var(--care-cloud-white); }
+.coach-trainee-quota-edit.is-error .coach-trainee-input { color: var(--care-goal-pink-edge); }
+.coach-trainee-quota-edit.is-error .coach-trainee-save { opacity: .5; pointer-events: none; }
+.coach-trainee-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.coach-feedback { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; font-weight: 600; margin-top: 10px; line-height: 1.5; }
+.coach-feedback .mark { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; background: var(--care-goal-pink); color: var(--care-deep-navy-edge); box-shadow: 0 2px 0 var(--care-goal-pink-edge); }
+.coach-feedback.is-error { color: var(--care-goal-pink-edge); }
+.coach-feedback.is-error b { color: var(--care-deep-navy); }
+
+/* รหัสเชิญ */
+.coach-trainee-code-row { display: flex; gap: 10px; align-items: stretch; margin-top: 12px; }
+.coach-trainee-code {
+  flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 0 16px; min-height: 52px; border-radius: 14px;
+  background: var(--care-cloud-white);
+  border: 2px dashed var(--care-glacier-edge);
+  box-shadow: inset 2px 3px 5px var(--care-cool-mist), inset -2px -2px 4px var(--care-cloud-white);
+}
+.coach-trainee-code code { font-family: "Noto Sans Thai", sans-serif; font-size: 22px; font-weight: 700; letter-spacing: .06em; }
+.coach-trainee-code small { color: var(--care-ocean-blue-edge); font-weight: 600; white-space: nowrap; }
+
+/* สถานะว่าง */
+.coach-trainee-empty { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 28px 20px; }
+.coach-trainee-empty-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--care-frost-blue); color: var(--care-ocean-blue);
+  box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-cool-mist), 0 4px 1px var(--care-cool-mist), 0 8px 10px var(--care-cool-mist);
+}
+.coach-trainee-empty h2 { font-size: 19px; font-weight: 700; }
+.coach-trainee-empty p { color: var(--care-ocean-blue-edge); font-size: 14px; max-width: 32ch; }
+
+/* ---------- จอ 2 · การ์ดสมาชิก ---------- */
+.coach-member-card { display: flex; flex-direction: column; gap: 12px; }
+.coach-member-card-head { display: flex; align-items: center; gap: 14px; }
+.coach-member-card-head .who { flex: 1; min-width: 0; }
+.coach-member-card-head .who .coach-chip-row { margin-top: 6px; }
+.coach-member-cycle { font-size: 13px; color: var(--care-ocean-blue-edge); font-weight: 500; }
+.coach-member-cycle b { color: var(--care-deep-navy); font-weight: 700; }
+.coach-member-card.is-expired .coach-member-cycle b { color: var(--care-goal-pink-edge); }
+.coach-member-data { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.coach-member-data .coach-metric { padding: 10px 8px; text-align: center; }
+.coach-member-data .coach-metric-value { font-size: 14px; font-weight: 600; }
+.coach-member-data .coach-metric-value::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--care-coach-green-edge); }
+.coach-member-data .coach-metric.is-none .coach-metric-value { color: var(--care-glacier-edge); }
+.coach-member-data .coach-metric.is-none .coach-metric-value::before { background: var(--care-frost-edge); }
+.coach-member-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--care-cool-mist); }
+.coach-member-card-foot .why { font-size: 12.5px; color: var(--care-ocean-blue-edge); flex: 1; min-width: 160px; }
+.coach-member-card.is-expired { background: var(--care-cloud-white); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-blush-pink), 0 5px 2px var(--care-pink-edge), 0 11px 14px var(--care-cool-mist); }
+.coach-trainee-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+.coach-trainee-filter .coach-chip { min-height: 36px; padding: 6px 14px; }
+.coach-trainee-filter .coach-chip.is-selected { background: var(--care-deep-navy); color: var(--care-cloud-white); box-shadow: 0 2px 0 var(--care-deep-navy-edge); }
+
+/* ---------- กล่องยืนยัน ---------- */
+.coach-trainee-confirm { display: flex; flex-direction: column; gap: 14px; }
+.coach-trainee-confirm-head { display: flex; align-items: center; gap: 12px; }
+.coach-trainee-confirm-head h2 { font-size: 20px; font-weight: 700; line-height: 1.3; }
+.coach-trainee-confirm-head p { font-size: 13px; color: var(--care-ocean-blue-edge); margin-top: 2px; }
+.coach-trainee-confirm-icon {
+  flex: 0 0 48px; width: 48px; height: 48px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700;
+  background: var(--care-seafoam); color: var(--care-deep-navy);
+  box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-mint-edge), 0 4px 1px var(--care-mint-edge), 0 8px 10px var(--care-cool-mist);
+}
+.coach-trainee-facts { display: grid; gap: 10px; }
+.coach-trainee-facts li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; background: var(--care-frost-blue); font-size: 14px; line-height: 1.5; box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-cool-mist), 0 3px 1px var(--care-cool-mist), 0 6px 8px var(--care-cool-mist); }
+.coach-trainee-facts .mark { flex: 0 0 24px; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: var(--care-seafoam); color: var(--care-deep-navy); box-shadow: 0 2px 0 var(--care-mint-edge); margin-top: 1px; }
+.coach-trainee-facts b { font-weight: 700; }
+.coach-trainee-confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* แบบอันตราย */
+.coach-trainee-confirm.is-danger {
+  box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-blush-pink), 0 5px 2px var(--care-pink-edge), 0 11px 14px var(--care-cool-mist);
+  border-top: 10px solid var(--care-goal-pink);
+}
+.coach-trainee-confirm.is-danger .coach-trainee-confirm-icon { background: var(--care-goal-pink); color: var(--care-deep-navy-edge); box-shadow: inset 2px 3px 4px var(--care-blush-pink), inset -2px -4px 6px var(--care-goal-pink-edge), 0 4px 1px var(--care-goal-pink-edge), 0 8px 10px var(--care-cool-mist); }
+.coach-trainee-confirm.is-danger .coach-trainee-facts li { background: var(--care-blush-pink); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-dusty-rose), 0 3px 1px var(--care-pink-edge), 0 6px 8px var(--care-cool-mist); }
+.coach-trainee-confirm.is-danger .coach-trainee-facts .mark { background: var(--care-goal-pink-edge); color: var(--care-cloud-white); box-shadow: 0 2px 0 var(--care-deep-navy-edge); }
+.coach-trainee-ack { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.coach-trainee-ack-label {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; cursor: pointer;
+  background: var(--care-cloud-white); border: 2px solid var(--care-pink-edge); font-weight: 600; font-size: 14.5px; line-height: 1.4;
+  box-shadow: inset 2px 3px 5px var(--care-cool-mist), inset -2px -2px 4px var(--care-cloud-white);
+}
+.coach-trainee-ack-label .box { flex: 0 0 28px; width: 28px; height: 28px; border-radius: 9px; border: 2px solid var(--care-goal-pink-edge); background: var(--care-cloud-white); display: inline-flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: var(--care-cloud-white); }
+.coach-trainee-ack:checked ~ .coach-trainee-ack-label { border-color: var(--care-goal-pink-edge); background: var(--care-blush-pink); }
+.coach-trainee-ack:checked ~ .coach-trainee-ack-label .box { background: var(--care-goal-pink-edge); }
+.coach-trainee-ack:focus-visible ~ .coach-trainee-ack-label { outline: 3px solid var(--care-plan-aqua); outline-offset: 2px; }
+.coach-trainee-confirm.is-danger .coach-trainee-danger-button { opacity: .45; pointer-events: none; }
+.coach-trainee-ack:checked ~ .coach-trainee-confirm-actions .coach-trainee-danger-button { opacity: 1; pointer-events: auto; }
+.coach-trainee-ack-hint { font-size: 12.5px; color: var(--care-ocean-blue-edge); text-align: center; }
+.coach-trainee-ack:checked ~ .coach-trainee-ack-hint { display: none; }
+.coach-trainee-ack:checked ~ .coach-trainee-ack-hint-on { display: block; }
+.coach-trainee-ack-hint-on { display: none; font-size: 12.5px; color: var(--care-goal-pink-edge); text-align: center; font-weight: 600; }
+
+/* ---------- จอ 3 · แผ่นเลื่อนขึ้น ---------- */
+.coach-trainee-sheet-stage {
+  background: var(--care-sky-mist);
+  padding: 56px 0 0;
+  position: relative;
+}
+.coach-trainee-sheet-stage::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 56px;
+  background: var(--care-cool-mist); opacity: .55;
+}
+.coach-trainee-sheet {
+  max-width: 640px; margin: 0 auto;
+  border-radius: 28px 28px 0 0;
+  padding: 10px 16px 28px;
+  background: var(--care-cloud-white);
+  box-shadow:
+    inset 2px 3px 4px var(--care-cloud-white),
+    inset -2px -4px 6px var(--care-cool-mist),
+    0 -5px 2px var(--care-cool-mist),
+    0 -11px 14px var(--care-cool-mist);
+  display: flex; flex-direction: column; gap: 16px;
+}
+.coach-trainee-sheet-handle { width: 48px; height: 6px; border-radius: 999px; background: var(--care-cool-mist); margin: 0 auto 4px; }
+.coach-trainee-sheet-top { display: flex; align-items: center; gap: 12px; }
+.coach-trainee-sheet-top .coach-back-link { width: 44px; height: 44px; font-size: 22px; }
+.coach-trainee-sheet-top .coach-section-label::after { display: none; }
+.coach-trainee-sheet h2 { font-size: 22px; font-weight: 700; line-height: 1.3; }
+.coach-trainee-steps { display: grid; gap: 10px; counter-reset: step; }
+.coach-trainee-steps li { counter-increment: step; display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; background: var(--care-frost-blue); line-height: 1.5; box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-cool-mist), 0 3px 1px var(--care-cool-mist), 0 6px 8px var(--care-cool-mist); }
+.coach-trainee-steps li::before { content: counter(step); flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; background: var(--care-lavender); color: var(--care-deep-navy-edge); box-shadow: 0 2px 0 var(--care-soft-violet); margin-top: 1px; }
+.coach-trainee-steps b { font-weight: 700; }
+.coach-trainee-beforeafter { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; }
+.coach-trainee-beforeafter .coach-metric { padding: 12px; }
+.coach-trainee-beforeafter .coach-metric-value { font-size: 20px; }
+.coach-trainee-beforeafter .coach-metric-value small { display: block; margin: 0; font-size: 12.5px; }
+.coach-trainee-beforeafter .coach-metric .left { margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--care-ocean-blue-edge); }
+.coach-trainee-beforeafter .coach-metric .left b { color: var(--care-deep-navy); font-size: 15px; }
+.coach-trainee-beforeafter .coach-metric.is-after { background: var(--care-mint-breeze); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-seafoam), 0 3px 1px var(--care-mint-edge), 0 6px 8px var(--care-cool-mist); }
+.coach-trainee-beforeafter .coach-metric.is-after .left b { color: var(--care-plan-aqua-edge); }
+.coach-trainee-beforeafter .arrow { display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: var(--care-ocean-blue); }
+.coach-trainee-sheet .coach-trainee-confirm-actions { grid-template-columns: 1fr; }
+.coach-trainee-sheet .coach-trainee-confirm-actions .coach-primary-button { min-height: 54px; font-size: 16px; }
+
+/* ---------- แถบเมนูล่าง (ของเดิมในแอป) ---------- */
+.coach-bottom-nav {
+  max-width: 640px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+  padding: 10px 8px 12px;
+  background: var(--care-cloud-white);
+  border-radius: 22px 22px 0 0;
+  box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-cool-mist), 0 -5px 2px var(--care-cool-mist), 0 -11px 14px var(--care-cool-mist);
+}
+.coach-bottom-nav a { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-size: 11.5px; font-weight: 600; color: var(--care-ocean-blue-edge); }
+.coach-bottom-nav a i { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--care-ocean-blue-edge); }
+.coach-bottom-nav a.is-active { color: var(--care-deep-navy); }
+.coach-bottom-nav a.is-active i { background: var(--care-soft-aqua); color: var(--care-deep-navy); box-shadow: inset 2px 3px 4px var(--care-cloud-white), inset -2px -4px 6px var(--care-aqua-edge), 0 3px 1px var(--care-aqua-edge), 0 6px 8px var(--care-cool-mist); }
+.coach-bottom-nav svg { width: 22px; height: 22px; }
+
+@media (max-width: 360px) {
+  .coach-trainee-metrics { grid-template-columns: 1fr 1fr; }
+  .coach-trainee-confirm-actions { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================================== -->
+<!-- จอ 1 · โค้ชฝึกหัดของฉัน -->
+<!-- =============================================================== -->
+<div class="demo-divider"><span>จอ 1 · โค้ชฝึกหัดของฉัน</span></div>
+
+<main class="coach-shell" id="screen-trainees">
+  <div class="coach-shell-inner">
+
+    <a class="coach-back-link" href="#screen-trainees" aria-label="ย้อนกลับ">←</a>
+
+    <header class="coach-page-head">
+      <div class="coach-page-head-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.3 14.2c2.6.1 4.5 1.4 5.2 4.3"/></svg>
+      </div>
+      <div>
+        <h1>โค้ชฝึกหัดของฉัน <span class="coach-count-badge">3 คน</span></h1>
+        <p>แบ่งโควตาสมาชิกของคุณให้ลูกทีมดูแลแทนได้</p>
+      </div>
+    </header>
+
+    <!-- โควตาของฉัน -->
+    <section class="coach-card coach-trainee-quota" aria-labelledby="quota-title">
+      <p class="coach-section-label" id="quota-title">โควตาของฉัน · แพคเกจ 50 คน</p>
+
+      <div class="coach-trainee-quota-head">
+        <div class="coach-trainee-quota-used">
+          <span class="lbl">ใช้ไป</span>
+          <span class="num">45<small>จาก 50 คน</small></span>
+        </div>
+        <div class="coach-trainee-quota-left is-low">
+          <span class="coach-chip is-warn">ใกล้เต็ม</span>
+          <span class="num">เหลือ 5 คน</span>
+        </div>
+      </div>
+
+      <div class="coach-trainee-bar is-low" role="img" aria-label="ใช้ไป 45 จาก 50 คน: ดูแลเอง 25 คน แบ่งให้โค้ชฝึกหัด 20 คน เหลือ 5 คน">
+        <span class="seg-own" style="width:50%"></span>
+        <span class="seg-shared" style="width:40%"></span>
+        <span class="seg-free-hint" style="width:10%"></span>
+      </div>
+
+      <ul class="coach-trainee-legend">
+        <li><i class="dot own"></i> สมาชิกที่ฉันดูแลเอง <b>25 คน</b></li>
+        <li><i class="dot shared"></i> แบ่งให้โค้ชฝึกหัด 3 คน <b>20 คน</b></li>
+        <li><i class="dot free"></i> ยังแบ่งได้อีก <b>5 คน</b></li>
+      </ul>
+
+      <p class="coach-card-lead">โควตาที่แบ่งให้โค้ชฝึกหัดนับว่าใช้ไปทันที ไม่ต้องรอให้เขามีสมาชิกจริง ถ้าต้องการที่ว่างเพิ่ม ให้ลดโควตาของโค้ชฝึกหัดที่ยังใช้ไม่เต็ม</p>
+    </section>
+
+    <p class="coach-section-label">โค้ชฝึกหัด 3 คน</p>
+
+    <!-- ใบที่ 1 · ปกติ -->
+    <article class="coach-card coach-trainee-card">
+      <div class="coach-trainee-card-head">
+        <span class="coach-member-avatar" aria-hidden="true">บ</span>
+        <div class="who">
+          <h2 class="coach-member-name">โค้ชบี</h2>
+          <p>เข้าทีม 3 ก.ย. 2569 · มีลูกทีม 1 คน</p>
+        </div>
+        <span class="coach-chip is-ok">ยังมีที่ว่าง 2</span>
+      </div>
+
+      <div class="coach-trainee-metrics">
+        <div class="coach-metric"><span class="coach-metric-label">โควตาที่ได้รับ</span><span class="coach-metric-value">10</span></div>
+        <div class="coach-metric"><span class="coach-metric-label">ดูแลอยู่จริง</span><span class="coach-metric-value">6<small>คน</small></span></div>
+        <div class="coach-metric"><span class="coach-metric-label">แบ่งต่อให้ลูกทีม</span><span class="coach-metric-value">2<small>คน</small></span></div>
+      </div>
+
+      <div class="coach-subcard coach-trainee-quota-edit">
+        <label class="coach-subcard-title" for="quota-bee">แบ่งโควตาให้โค้ชบี <span>กรอกตัวเลขแล้วกดบันทึก</span></label>
+        <div class="coach-trainee-input-row">
+          <div class="coach-trainee-input-wrap">
+            <input class="coach-trainee-input" id="quota-bee" type="number" inputmode="numeric" min="8" max="15" step="1" value="10">
+            <span class="coach-trainee-input-unit">คน</span>
+          </div>
+          <button class="coach-primary-button coach-trainee-save" type="button">บันทึก</button>
+        </div>
+        <p class="coach-trainee-hint">กรอกได้ <b>8 - 15</b> · 8 = ที่โค้ชบีถืออยู่แล้ว (ดูแล 6 + แบ่งต่อ 2) · 15 = ที่ให้ไว้ 10 รวมกับก้อนของคุณที่เหลือ 5</p>
+      </div>
+
+      <div class="coach-trainee-actions">
+        <a class="coach-trainee-link" href="#screen-members">ดูสมาชิกของโค้ชบี →</a>
+        <button class="coach-trainee-secondary" type="button">ให้ขึ้นเป็นโค้ช</button>
+      </div>
+    </article>
+
+    <!-- ใบที่ 2 · เต็มแล้ว -->
+    <article class="coach-card coach-trainee-card">
+      <div class="coach-trainee-card-head">
+        <span class="coach-member-avatar av-warm" aria-hidden="true">ก</span>
+        <div class="who">
+          <h2 class="coach-member-name">โค้ชกิ๊ฟ</h2>
+          <p>เข้าทีม 10 ก.ย. 2569 · ยังไม่มีลูกทีม</p>
+        </div>
+        <span class="coach-chip is-full">เต็มแล้ว</span>
+      </div>
+
+      <div class="coach-trainee-metrics">
+        <div class="coach-metric is-full"><span class="coach-metric-label">โควตาที่ได้รับ</span><span class="coach-metric-value">10</span></div>
+        <div class="coach-metric is-full"><span class="coach-metric-label">ดูแลอยู่จริง</span><span class="coach-metric-value">10<small>คน</small></span></div>
+        <div class="coach-metric"><span class="coach-metric-label">แบ่งต่อให้ลูกทีม</span><span class="coach-metric-value">0<small>คน</small></span></div>
+      </div>
+
+      <div class="coach-notice is-warn">
+        <span class="coach-notice-icon" aria-hidden="true">!</span>
+        <div>
+          <p class="coach-notice-title">โค้ชกิ๊ฟรับสมาชิกเพิ่มไม่ได้แล้ว ใช้ครบ 10 จาก 10</p>
+          <p class="coach-notice-body">ถ้าจะให้รับเพิ่ม เพิ่มตัวเลขด้านล่างได้อีกไม่เกิน 5 คน (ก้อนของคุณเหลือ 5)</p>
+        </div>
+      </div>
+
+      <div class="coach-subcard coach-trainee-quota-edit">
+        <label class="coach-subcard-title" for="quota-gift">แบ่งโควตาให้โค้ชกิ๊ฟ <span>กรอกตัวเลขแล้วกดบันทึก</span></label>
+        <div class="coach-trainee-input-row">
+          <div class="coach-trainee-input-wrap">
+            <input class="coach-trainee-input" id="quota-gift" type="number" inputmode="numeric" min="10" max="15" step="1" value="10">
+            <span class="coach-trainee-input-unit">คน</span>
+          </div>
+          <button class="coach-primary-button coach-trainee-save" type="button">บันทึก</button>
+        </div>
+        <p class="coach-trainee-hint">กรอกได้ <b>10 - 15</b> · ลดต่ำกว่า 10 ไม่ได้ เพราะโค้ชกิ๊ฟดูแลอยู่ 10 คนพอดี</p>
+      </div>
+
+      <div class="coach-trainee-actions">
+        <a class="coach-trainee-link" href="#screen-members">ดูสมาชิกของโค้ชกิ๊ฟ →</a>
+        <button class="coach-trainee-secondary" type="button">ให้ขึ้นเป็นโค้ช</button>
+      </div>
+    </article>
+
+    <!-- ใบที่ 3 · โควตา 0 -->
+    <article class="coach-card coach-trainee-card">
+      <div class="coach-trainee-card-head">
+        <span class="coach-member-avatar av-muted" aria-hidden="true">จ</span>
+        <div class="who">
+          <h2 class="coach-member-name">โค้ชเจี๊ยบ</h2>
+          <p>เข้าทีม 24 ก.ย. 2569 · ยังไม่มีลูกทีม</p>
+        </div>
+        <span class="coach-chip is-empty">ยังไม่ได้รับโควตา</span>
+      </div>
+
+      <div class="coach-trainee-metrics">
+        <div class="coach-metric is-zero"><span class="coach-metric-label">โควตาที่ได้รับ</span><span class="coach-metric-value">0</span></div>
+        <div class="coach-metric is-zero"><span class="coach-metric-label">ดูแลอยู่จริง</span><span class="coach-metric-value">0<small>คน</small></span></div>
+        <div class="coach-metric is-zero"><span class="coach-metric-label">แบ่งต่อให้ลูกทีม</span><span class="coach-metric-value">0<small>คน</small></span></div>
+      </div>
+
+      <div class="coach-subcard coach-trainee-quota-edit">
+        <label class="coach-subcard-title" for="quota-jeab">แบ่งโควตาให้โค้ชเจี๊ยบ <span>กรอกตัวเลขแล้วกดบันทึก</span></label>
+        <div class="coach-trainee-input-row">
+          <div class="coach-trainee-input-wrap">
+            <input class="coach-trainee-input" id="quota-jeab" type="number" inputmode="numeric" min="0" max="5" step="1" value="0">
+            <span class="coach-trainee-input-unit">คน</span>
+          </div>
+          <button class="coach-primary-button coach-trainee-save" type="button">บันทึก</button>
+        </div>
+        <p class="coach-trainee-hint">กรอกได้ <b>0 - 5</b> · โค้ชเจี๊ยบยังรับสมาชิกไม่ได้จนกว่าคุณจะแบ่งโควตาให้อย่างน้อย 1 คน</p>
+      </div>
+
+      <div class="coach-trainee-actions">
+        <a class="coach-trainee-link" href="#screen-members">ดูสมาชิกของโค้ชเจี๊ยบ →</a>
+        <button class="coach-trainee-secondary" type="button">ให้ขึ้นเป็นโค้ช</button>
+      </div>
+    </article>
+
+    <!-- เพิ่มโค้ชฝึกหัด + รหัสเชิญ -->
+    <section class="coach-card">
+      <p class="coach-section-label">เพิ่มโค้ชฝึกหัด</p>
+      <p class="coach-card-lead" style="margin-top:12px">ส่งรหัสนี้ให้คนที่จะเป็นโค้ชฝึกหัด กรอกตอนสมัครแล้วเขาจะเข้ามาอยู่ใต้คุณอัตโนมัติ เริ่มต้นที่โควตา 0 จนกว่าคุณจะแบ่งให้</p>
+      <div class="coach-trainee-code-row">
+        <div class="coach-trainee-code">
+          <small>รหัสของฉัน</small>
+          <code>nan2026</code>
+        </div>
+        <button class="coach-trainee-secondary" type="button">คัดลอกรหัส</button>
+      </div>
+      <button class="coach-primary-button is-block" type="button" style="margin-top:12px">เพิ่มโค้ชฝึกหัด</button>
+    </section>
+
+    <!-- ตัวอย่างสถานะข้อผิดพลาด -->
+    <p class="coach-section-label">ตัวอย่างสถานะข้อผิดพลาด · ก. กรอกเกินก้อนที่เหลือ</p>
+
+    <article class="coach-card coach-trainee-card">
+      <div class="coach-trainee-card-head">
+        <span class="coach-member-avatar" aria-hidden="true">บ</span>
+        <div class="who">
+          <h2 class="coach-member-name">โค้ชบี</h2>
+          <p>เข้าทีม 3 ก.ย. 2569 · มีลูกทีม 1 คน</p>
+        </div>
+        <span class="coach-chip is-ok">ยังมีที่ว่าง 2</span>
+      </div>
+      <div class="coach-trainee-metrics">
+        <div class="coach-metric"><span class="coach-metric-label">โควตาที่ได้รับ</span><span class="coach-metric-value">10</span></div>
+        <div class="coach-metric"><span class="coach-metric-label">ดูแลอยู่จริง</span><span class="coach-metric-value">6<small>คน</small></span></div>
+        <div class="coach-metric"><span class="coach-metric-label">แบ่งต่อให้ลูกทีม</span><span class="coach-metric-value">2<small>คน</small></span></div>
+      </div>
+      <div class="coach-subcard coach-trainee-quota-edit is-error">
+        <label class="coach-subcard-title" for="quota-bee-over">แบ่งโควตาให้โค้ชบี <span>กรอกตัวเลขแล้วกดบันทึก</span></label>
+        <div class="coach-trainee-input-row">
+          <div class="coach-trainee-input-wrap">
+            <input class="coach-trainee-input" id="quota-bee-over" type="number" inputmode="numeric" min="8" max="15" step="1" value="18" aria-invalid="true" aria-describedby="err-over">
+            <span class="coach-trainee-input-unit">คน</span>
+          </div>
+          <button class="coach-primary-button coach-trainee-save" type="button" aria-disabled="true">บันทึก</button>
+        </div>
+        <p class="coach-feedback is-error" id="err-over"><span class="mark" aria-hidden="true">!</span><span>โควตาของคุณเหลือแบ่งได้อีก <b>5 คน</b> กรอกเกินนี้ไม่ได้ · ใส่ได้สูงสุด <b>15</b></span></p>
+        <p class="coach-trainee-hint">กรอกได้ <b>8 - 15</b> · ถ้าต้องการให้มากกว่านี้ ลดโควตาของโค้ชฝึกหัดคนอื่นที่ยังใช้ไม่เต็มก่อน</p>
+      </div>
+      <div class="coach-trainee-actions">
+        <a class="coach-trainee-link" href="#screen-members">ดูสมาชิกของโค้ชบี →</a>
+        <button class="coach-trainee-secondary" type="button">ให้ขึ้นเป็นโค้ช</button>
+      </div>
+    </article>
+
+    <p class="coach-section-label">ตัวอย่างสถานะข้อผิดพลาด · ข. ลดต่ำกว่าที่ลูกทีมดูแลอยู่</p>
+
+    <article class="coach-card coach-trainee-card">
+      <div class="coach-trainee-card-head">
+        <span class="coach-member-avatar" aria-hidden="true">บ</span>
+        <div class="who">
+          <h2 class="coach-member-name">โค้ชบี</h2>
+          <p>เข้าทีม 3 ก.ย. 2569 · มีลูกทีม 1 คน</p>
+        </div>
+        <span class="coach-chip is-ok">ยังมีที่ว่าง 2</span>
+      </div>
+      <div class="coach-trainee-metrics">
+        <div class="coach-metric"><span class="coach-metric-label">โควตาที่ได้รับ</span><span class="coach-metric-value">10</span></div>
+        <div class="coach-metric"><span class="coach-metric-label">ดูแลอยู่จริง</span><span class="coach-metric-value">6<small>คน</small></span></div>
+        <div class="coach-metric"><span class="coach-metric-label">แบ่งต่อให้ลูกทีม</span><span class="coach-metric-value">2<small>คน</small></span></div>
+      </div>
+      <div class="coach-subcard coach-trainee-quota-edit is-error">
+        <label class="coach-subcard-title" for="quota-bee-under">แบ่งโควตาให้โค้ชบี <span>กรอกตัวเลขแล้วกดบันทึก</span></label>
+        <div class="coach-trainee-input-row">
+          <div class="coach-trainee-input-wrap">
+            <input class="coach-trainee-input" id="quota-bee-under" type="number" inputmode="numeric" min="8" max="15" step="1" value="5" aria-invalid="true" aria-describedby="err-under">
+            <span class="coach-trainee-input-unit">คน</span>
+          </div>
+          <button class="coach-primary-button coach-trainee-save" type="button" aria-disabled="true">บันทึก</button>
+        </div>
+        <p class="coach-feedback is-error" id="err-under"><span class="mark" aria-hidden="true">!</span><span>โค้ชบีดูแลอยู่แล้ว <b>8 คน</b> ลดต่ำกว่านี้ไม่ได้ ต้องเอาสมาชิกออกก่อน</span></p>
+        <p class="coach-trainee-hint">กรอกได้ <b>8 - 15</b> · 8 = ดูแลเอง 6 + แบ่งต่อให้ลูกทีม 2</p>
+      </div>
+      <div class="coach-trainee-actions">
+        <a class="coach-trainee-link" href="#screen-members">เอาสมาชิกของโค้ชบีออก →</a>
+        <button class="coach-trainee-secondary" type="button">ให้ขึ้นเป็นโค้ช</button>
+      </div>
+    </article>
+
+    <!-- สถานะยังไม่มีโค้ชฝึกหัด -->
+    <p class="coach-section-label">ตัวอย่างสถานะ · ยังไม่มีโค้ชฝึกหัดเลย</p>
+
+    <section class="coach-card coach-trainee-empty">
+      <div class="coach-trainee-empty-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.2"/><path d="M4 19c.7-3 3-4.6 6-4.6s5.3 1.6 6 4.6"/><path d="M18.5 7v5M16 9.5h5"/></svg>
+      </div>
+      <h2>ยังไม่มีโค้ชฝึกหัด</h2>
+      <p>คุณมีโควตา 50 คน แบ่งให้ลูกทีมช่วยดูแลได้ ส่งรหัส <b>nan2026</b> ให้เขาใช้ตอนสมัคร</p>
+      <div class="coach-trainee-code-row" style="width:100%">
+        <div class="coach-trainee-code">
+          <small>รหัสของฉัน</small>
+          <code>nan2026</code>
+        </div>
+        <button class="coach-trainee-secondary" type="button">คัดลอกรหัส</button>
+      </div>
+      <button class="coach-primary-button is-block" type="button">เพิ่มโค้ชฝึกหัด</button>
+    </section>
+
+  </div>
+
+  <nav class="coach-bottom-nav" aria-label="เมนูหลัก">
+    <a href="#screen-trainees"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/></svg></i>แดชบอร์ด</a>
+    <a href="#screen-trainees"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 20c.8-3.5 3.4-5.3 6.5-5.3s5.7 1.8 6.5 5.3"/></svg></i>สมาชิก</a>
+    <a href="#screen-trainees"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5h6M9 10h6M9 14h4"/></svg></i>ห้องการบ้าน</a>
+    <a href="#screen-trainees" class="is-active"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.3 14.2c2.6.1 4.5 1.4 5.2 4.3"/></svg></i>ทีมงาน</a>
+    <a href="#screen-trainees"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></i>รายงาน</a>
+  </nav>
+</main>
+
+
+<!-- =============================================================== -->
+<!-- จอ 2 · สมาชิกของโค้ชบี -->
+<!-- =============================================================== -->
+<div class="demo-divider"><span>จอ 2 · สมาชิกของโค้ชบี</span></div>
+
+<main class="coach-shell" id="screen-members">
+  <div class="coach-shell-inner">
+
+    <a class="coach-back-link" href="#screen-trainees" aria-label="ย้อนกลับไปหน้าโค้ชฝึกหัดของฉัน">←</a>
+
+    <header class="coach-page-head">
+      <span class="coach-member-avatar" aria-hidden="true">บ</span>
+      <div>
+        <h1>สมาชิกของโค้ชบี</h1>
+        <p>ดูแลอยู่ 6 คน จากโควตา 10</p>
+      </div>
+    </header>
+
+    <div class="coach-notice is-info">
+      <span class="coach-notice-icon" aria-hidden="true">i</span>
+      <div>
+        <p class="coach-notice-title">เอาสมาชิกออกจากมือโค้ชบีได้ 2 ทาง</p>
+        <p class="coach-notice-body">คนที่ยังอยู่ในรอบดูแล ย้ายมาให้คุณดูแลเอง ข้อมูลอยู่ครบ · คนที่หมดรอบแล้ว ลบออกจากระบบได้ โควตาคืนทันที</p>
+      </div>
+    </div>
+
+    <div class="coach-trainee-filter" role="group" aria-label="กรองตามสถานะรอบดูแล">
+      <span class="coach-chip is-selected">ทั้งหมด 6</span>
+      <span class="coach-chip is-ok">อยู่ในรอบดูแล 4</span>
+      <span class="coach-chip is-danger">หมดรอบแล้ว 2</span>
+    </div>
+
+    <!-- สมาชิก 1 · อยู่ในรอบ -->
+    <article class="coach-card coach-member-card">
+      <div class="coach-member-card-head">
+        <span class="coach-member-avatar av-mint" aria-hidden="true">ต</span>
+        <div class="who">
+          <h2 class="coach-member-name">ตูน</h2>
+          <div class="coach-chip-row"><span class="coach-care-pill is-active">อยู่ในรอบดูแล</span></div>
+        </div>
+      </div>
+      <p class="coach-member-cycle">รอบดูแลถึง 11 ต.ค. 2569 · <b>เหลือ 12 วัน</b></p>
+      <div class="coach-member-data">
+        <div class="coach-metric"><span class="coach-metric-label">อาหาร</span><span class="coach-metric-value">มีข้อมูล</span></div>
+        <div class="coach-metric"><span class="coach-metric-label">น้ำ</span><span class="coach-metric-value">7 แก้ว</span></div>
+        <div class="coach-metric is-none"><span class="coach-metric-label">ออกกำลังกาย</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+      </div>
+      <div class="coach-member-card-foot">
+        <p class="why">ย้ายแล้วการบ้าน รูป น้ำหนัก ของตูนอยู่ครบ</p>
+        <button class="coach-trainee-secondary" type="button">ย้ายมาดูแลเอง</button>
+      </div>
+    </article>
+
+    <!-- สมาชิก 2 · อยู่ในรอบ ใกล้หมด -->
+    <article class="coach-card coach-member-card">
+      <div class="coach-member-card-head">
+        <span class="coach-member-avatar av-violet" aria-hidden="true">ม</span>
+        <div class="who">
+          <h2 class="coach-member-name">มิ้นท์</h2>
+          <div class="coach-chip-row"><span class="coach-care-pill is-active">อยู่ในรอบดูแล</span></div>
+        </div>
+      </div>
+      <p class="coach-member-cycle">รอบดูแลถึง 2 ต.ค. 2569 · <b>เหลือ 3 วัน</b></p>
+      <div class="coach-member-data">
+        <div class="coach-metric"><span class="coach-metric-label">อาหาร</span><span class="coach-metric-value">มีข้อมูล</span></div>
+        <div class="coach-metric is-none"><span class="coach-metric-label">น้ำ</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+        <div class="coach-metric"><span class="coach-metric-label">ออกกำลังกาย</span><span class="coach-metric-value">มีข้อมูล</span></div>
+      </div>
+      <div class="coach-member-card-foot">
+        <p class="why">ย้ายแล้วการบ้าน รูป น้ำหนัก ของมิ้นท์อยู่ครบ</p>
+        <button class="coach-trainee-secondary" type="button">ย้ายมาดูแลเอง</button>
+      </div>
+    </article>
+
+    <!-- สมาชิก 3 · หมดรอบ -->
+    <article class="coach-card coach-member-card is-expired">
+      <div class="coach-member-card-head">
+        <span class="coach-member-avatar av-rose" aria-hidden="true">ฝ</span>
+        <div class="who">
+          <h2 class="coach-member-name">ฝ้าย</h2>
+          <div class="coach-chip-row"><span class="coach-care-pill is-expired">หมดรอบแล้ว</span></div>
+        </div>
+      </div>
+      <p class="coach-member-cycle">รอบดูแลจบ 9 ก.ย. 2569 · <b>หมดเมื่อ 20 วันก่อน</b></p>
+      <div class="coach-member-data">
+        <div class="coach-metric is-none"><span class="coach-metric-label">อาหาร</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+        <div class="coach-metric is-none"><span class="coach-metric-label">น้ำ</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+        <div class="coach-metric is-none"><span class="coach-metric-label">ออกกำลังกาย</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+      </div>
+      <div class="coach-member-card-foot">
+        <p class="why">ยังกินโควตาของโค้ชบีอยู่ 1 ที่ ลบแล้วคืนทันที</p>
+        <button class="coach-trainee-danger-button" type="button">ลบออกจากระบบ</button>
+      </div>
+    </article>
+
+    <!-- สมาชิก 4 · หมดรอบ -->
+    <article class="coach-card coach-member-card is-expired">
+      <div class="coach-member-card-head">
+        <span class="coach-member-avatar av-ocean" aria-hidden="true">พ</span>
+        <div class="who">
+          <h2 class="coach-member-name">พลอย</h2>
+          <div class="coach-chip-row"><span class="coach-care-pill is-expired">หมดรอบแล้ว</span></div>
+        </div>
+      </div>
+      <p class="coach-member-cycle">รอบดูแลจบ 15 ส.ค. 2569 · <b>หมดเมื่อ 45 วันก่อน</b></p>
+      <div class="coach-member-data">
+        <div class="coach-metric is-none"><span class="coach-metric-label">อาหาร</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+        <div class="coach-metric is-none"><span class="coach-metric-label">น้ำ</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+        <div class="coach-metric is-none"><span class="coach-metric-label">ออกกำลังกาย</span><span class="coach-metric-value">ยังไม่มีข้อมูล</span></div>
+      </div>
+      <div class="coach-member-card-foot">
+        <p class="why">ยังกินโควตาของโค้ชบีอยู่ 1 ที่ ลบแล้วคืนทันที</p>
+        <button class="coach-trainee-danger-button" type="button">ลบออกจากระบบ</button>
+      </div>
+    </article>
+
+    <button class="coach-trainee-secondary is-block" type="button">ดูอีก 2 คนที่เหลือ</button>
+
+    <!-- กล่องยืนยัน ก. ย้ายมาดูแลเอง -->
+    <p class="coach-section-label">กล่องยืนยัน · ก. ย้ายมาดูแลเอง</p>
+
+    <section class="coach-card coach-trainee-confirm" aria-labelledby="confirm-move">
+      <div class="coach-trainee-confirm-head">
+        <span class="coach-trainee-confirm-icon" aria-hidden="true">⇄</span>
+        <div>
+          <h2 id="confirm-move">ย้ายตูนมาให้คุณดูแลเอง?</h2>
+          <p>จากโค้ชบี → โค้ชแนน</p>
+        </div>
+      </div>
+      <ul class="coach-trainee-facts">
+        <li><span class="mark" aria-hidden="true">✓</span><span>การบ้าน รูป น้ำหนัก ของตูน<b>อยู่ครบ ไม่มีอะไรหาย</b></span></li>
+        <li><span class="mark" aria-hidden="true">✓</span><span>โควตาของโค้ชบีจะลดจาก <b>10 เหลือ 9</b> · ตูนย้ายมานับในสมาชิกที่คุณดูแลเอง</span></li>
+        <li><span class="mark" aria-hidden="true">✓</span><span>ตูนอยู่ในรอบดูแลต่อ เหลือ 12 วันเท่าเดิม</span></li>
+      </ul>
+      <div class="coach-trainee-confirm-actions">
+        <button class="coach-trainee-secondary" type="button">ยกเลิก</button>
+        <button class="coach-primary-button" type="button">ย้ายมาดูแลเอง</button>
+      </div>
+    </section>
+
+    <!-- กล่องยืนยัน ข. ลบออกจากระบบ -->
+    <p class="coach-section-label">กล่องยืนยัน · ข. ลบออกจากระบบ</p>
+
+    <section class="coach-card coach-trainee-confirm is-danger" aria-labelledby="confirm-delete">
+      <div class="coach-trainee-confirm-head">
+        <span class="coach-trainee-confirm-icon" aria-hidden="true">!</span>
+        <div>
+          <h2 id="confirm-delete">ลบฝ้ายออกจากระบบ?</h2>
+          <p>หมดรอบดูแลเมื่อ 20 วันก่อน · เป็นสมาชิกของโค้ชบี</p>
+        </div>
+      </div>
+      <ul class="coach-trainee-facts">
+        <li><span class="mark" aria-hidden="true">!</span><span><b>ลบแล้วเอาคืนไม่ได้</b> ข้อมูลการบ้านและรูปทั้งหมดของฝ้ายจะหายไป</span></li>
+        <li><span class="mark" aria-hidden="true">!</span><span>โควตาของโค้ชบีจะลดจาก <b>10 เหลือ 9</b> และคืนเข้าก้อนของคุณทันที (เหลือ 5 → 6)</span></li>
+      </ul>
+
+      <input class="coach-trainee-ack" type="checkbox" id="ack-delete">
+      <label class="coach-trainee-ack-label" for="ack-delete">
+        <span class="box" aria-hidden="true">✓</span>
+        <span>ฉันเข้าใจว่าลบแล้วเอาคืนไม่ได้ และต้องการลบฝ้ายจริง</span>
+      </label>
+      <p class="coach-trainee-ack-hint">ติ๊กช่องด้านบนก่อน ปุ่มลบจึงจะกดได้ · ถ้ายังไม่แน่ใจ ใช้ "ย้ายมาดูแลเอง" แทน ข้อมูลจะอยู่ครบ</p>
+      <p class="coach-trainee-ack-hint-on">กดปุ่มลบแล้วจะลบทันที ไม่มีถามซ้ำ</p>
+      <div class="coach-trainee-confirm-actions">
+        <button class="coach-trainee-secondary" type="button">ยกเลิก</button>
+        <button class="coach-trainee-danger-button" type="button">ลบฝ้ายออกจากระบบ</button>
+      </div>
+    </section>
+
+  </div>
+
+  <nav class="coach-bottom-nav" aria-label="เมนูหลัก">
+    <a href="#screen-members"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/></svg></i>แดชบอร์ด</a>
+    <a href="#screen-members"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 20c.8-3.5 3.4-5.3 6.5-5.3s5.7 1.8 6.5 5.3"/></svg></i>สมาชิก</a>
+    <a href="#screen-members"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5h6M9 10h6M9 14h4"/></svg></i>ห้องการบ้าน</a>
+    <a href="#screen-members" class="is-active"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.3 14.2c2.6.1 4.5 1.4 5.2 4.3"/></svg></i>ทีมงาน</a>
+    <a href="#screen-members"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></i>รายงาน</a>
+  </nav>
+</main>
+
+
+<!-- =============================================================== -->
+<!-- จอ 3 · ให้โค้ชบีขึ้นเป็นโค้ช (แผ่นเลื่อนขึ้นจากด้านล่าง) -->
+<!-- =============================================================== -->
+<div class="demo-divider"><span>จอ 3 · ให้โค้ชบีขึ้นเป็นโค้ช · แผ่นเลื่อนขึ้นจากด้านล่าง</span></div>
+
+<section class="coach-trainee-sheet-stage" id="screen-promote">
+  <div class="coach-trainee-sheet" role="dialog" aria-labelledby="promote-title">
+    <div class="coach-trainee-sheet-handle" aria-hidden="true"></div>
+
+    <div class="coach-trainee-sheet-top">
+      <a class="coach-back-link" href="#screen-trainees" aria-label="ย้อนกลับ">←</a>
+      <p class="coach-section-label">โค้ชฝึกหัดของฉัน · โค้ชบี</p>
+    </div>
+
+    <div class="coach-trainee-confirm-head">
+      <span class="coach-member-avatar" aria-hidden="true">บ</span>
+      <div>
+        <h2 id="promote-title">ให้โค้ชบีขึ้นเป็นโค้ช</h2>
+        <p>ตอนนี้ดูแลอยู่ 6 คน จากโควตา 10 ที่ยืมจากคุณ</p>
+      </div>
+    </div>
+
+    <ol class="coach-trainee-steps">
+      <li><span>โค้ชบีจะมี<b>แพคเกจของตัวเอง</b> และจ่ายค่าบริการเอง</span></li>
+      <li><span>โควตา <b>10 คน</b>ที่ยืมจากคุณไว้ <b>คืนกลับเข้าก้อนของคุณทั้งจำนวน</b> สมาชิก 6 คนของโค้ชบีย้ายไปนับในแพคเกจใหม่ของเขา</span></li>
+      <li><span>โค้ชบี<b>ยังอยู่ใต้รหัสของคุณเหมือนเดิม</b> ไม่ได้ออกจากทีม</span></li>
+    </ol>
+
+    <div>
+      <p class="coach-section-label" style="margin-bottom:10px">ก้อนของคุณ ก่อน → หลัง</p>
+      <div class="coach-trainee-beforeafter">
+        <div class="coach-metric">
+          <span class="coach-metric-label">ก่อน</span>
+          <span class="coach-metric-value">ใช้ไป 45 <small>จาก 50</small></span>
+          <span class="left">เหลือ <b>5</b></span>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="coach-metric is-after">
+          <span class="coach-metric-label">หลัง</span>
+          <span class="coach-metric-value">ใช้ไป 35 <small>จาก 50</small></span>
+          <span class="left">เหลือ <b>15</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="coach-trainee-confirm-actions">
+      <button class="coach-primary-button" type="button">ให้ขึ้นเป็นโค้ช</button>
+      <button class="coach-trainee-secondary" type="button">ยังไม่ทำ</button>
+    </div>
+  </div>
+</section>
+
+<div class="demo-divider"><span>จอ 3 · สถานะทำไม่ได้ · ตัวอย่าง</span></div>
+
+<section class="coach-trainee-sheet-stage">
+  <div class="coach-trainee-sheet" role="dialog" aria-labelledby="promote-blocked-title">
+    <div class="coach-trainee-sheet-handle" aria-hidden="true"></div>
+
+    <div class="coach-trainee-sheet-top">
+      <a class="coach-back-link" href="#screen-trainees" aria-label="ย้อนกลับ">←</a>
+      <p class="coach-section-label">โค้ชฝึกหัดของฉัน · โค้ชบี</p>
+    </div>
+
+    <div class="coach-trainee-confirm-head">
+      <span class="coach-member-avatar" aria-hidden="true">บ</span>
+      <div>
+        <h2 id="promote-blocked-title">ให้โค้ชบีขึ้นเป็นโค้ช</h2>
+        <p>ตอนนี้ดูแลอยู่ 60 คน จากโควตา 60 ที่ยืมจากคุณ</p>
+      </div>
+    </div>
+
+    <div class="coach-notice is-error">
+      <span class="coach-notice-icon" aria-hidden="true">!</span>
+      <div>
+        <p class="coach-notice-title">โค้ชบีดูแลอยู่ 60 คน แพคเกจเล็กที่สุดรับได้ 50 คน ยังขึ้นเป็นโค้ชไม่ได้</p>
+        <p class="coach-notice-body">ทางออก: ย้ายหรือลบสมาชิกของโค้ชบีออกอย่างน้อย <b>10 คน</b> ให้เหลือไม่เกิน 50 แล้วกลับมาทำรายการนี้ใหม่</p>
+      </div>
+    </div>
+
+    <ol class="coach-trainee-steps">
+      <li><span>ย้ายคนที่ยังอยู่ในรอบดูแลมาให้คุณดูแลเอง ข้อมูลอยู่ครบ</span></li>
+      <li><span>ลบคนที่หมดรอบดูแลแล้วออกจากระบบ โควตาคืนทันที</span></li>
+    </ol>
+
+    <div class="coach-trainee-confirm-actions">
+      <a class="coach-primary-button" href="#screen-members">ดูสมาชิกของโค้ชบี</a>
+      <button class="coach-trainee-secondary" type="button">ปิด</button>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
